@@ -1,0 +1,399 @@
+{
+  "name": "newsgithubV3",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// 設置基本配置\nconst config = {\n  studentId: 'A123321111',  // 可在此修改學號\n  repoOwner: 'ntust2026',\n  repoName: 'ntust2026.github.io',\n  filePath: 'newsEMBA',\n  // githubToken 已移至 Header Auth credential，無需在此設定\n};\n\n// 生成日期格式 (YYYYMMDD)\nconst now = new Date();\nconst year = now.getFullYear();\nconst month = String(now.getMonth() + 1).padStart(2, '0');\nconst day = String(now.getDate()).padStart(2, '0');\nconst hour = String(now.getHours()).padStart(2, '0');\nconst minute = String(now.getMinutes()).padStart(2, '0');\nconst dateStr = `${year}${month}${day}`;\nconst timeStr = `${hour}${minute}`;\n\n// 建立檔名 (日期+時分+學號)\nconst filename = `${dateStr}_${timeStr}_${config.studentId}.html`;\n\nconsole.log('工作流程配置:', JSON.stringify(config, null, 2));\nconsole.log('當前日期:', dateStr);\nconsole.log('生成的檔名:', filename);\n\nreturn [{\n  json: {\n    config: config,\n    dateStr: dateStr,\n    filename: filename,\n    timestamp: now.toISOString()\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        0
+      ],
+      "id": "d50a8d7a-b1f2-490d-860d-2c229b41c41f",
+      "name": "設置配置和檔案名"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 定義所有新聞主題\nconst topics = [\n  '投資理財',\n  '生活與時尚', \n  'AI',\n  '科技',\n  '吃'\n];\n\n// 隨機選擇一個主題\nconst randomTopic = topics[Math.floor(Math.random() * topics.length)];\n\nconsole.log('選中的主題:', randomTopic);\n\n// 保留之前的配置資訊和所有數據\nconst prevData = items[0].json;\n\nreturn [{\n  json: {\n    ...prevData,\n    selectedTopic: randomTopic,\n    config: prevData.config,\n    filename: prevData.filename\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        0
+      ],
+      "id": "54848366-2f71-4e47-bef2-1e48b1ef31f1",
+      "name": "隨機選擇主題"
+    },
+    {
+      "parameters": {
+        "url": "https://newsapi.org/v2/everything",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "apiKey",
+              "value": "8553bb7da65842d5a1a81314a7dec1dd"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json.selectedTopic }}"
+            },
+            {
+              "name": "language",
+              "value": "zh"
+            },
+            {
+              "name": "sortBy",
+              "value": "publishedAt"
+            },
+            {
+              "name": "pageSize",
+              "value": "10"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        976,
+        0
+      ],
+      "id": "eead920f-6ed4-489f-a33e-206df3729942",
+      "name": "取得新聞"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 取得台灣時間 (UTC+8)\nconst getTaiwanTime = () => {\n  const now = new Date();\n  // 轉換到台灣時區\n  const taiwanTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));\n  return taiwanTime;\n};\n\n// 處理新聞資料並準備輸出\nconsole.log('========== 輸入資料檢查 ==========');\nconsole.log('items 長度:', items.length);\n\nconst inputData = items[0].json;\nconst articles = inputData.articles;\nlet selectedTopic = inputData.selectedTopic;\n\nif (!selectedTopic) {\n  selectedTopic = '新聞';\n}\n\nconsole.log('找到的主題:', selectedTopic);\nconsole.log('文章數量:', articles ? articles.length : 0);\n\nif (!articles || !Array.isArray(articles) || articles.length === 0) {\n  console.log('錯誤：無文章資料');\n  throw new Error(`無「${selectedTopic}」相關新聞資料。`);\n}\n\n// 篩選有效的新聞\nconst validArticles = articles\n  .filter(article => {\n    const hasTitle = article.title && article.title.trim() !== '';\n    const hasDescription = article.description && article.description.trim() !== '';\n    const hasPublishedAt = article.publishedAt && !isNaN(new Date(article.publishedAt));\n    const hasUrl = article.url && article.url.trim() !== '';\n    \n    return hasTitle && hasDescription && hasPublishedAt && hasUrl;\n  })\n  .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));\n\nconsole.log('有效文章數量:', validArticles.length);\n\nif (validArticles.length === 0) {\n  throw new Error(`無有效的「${selectedTopic}」新聞資料。`);\n}\n\n// 選擇最新的文章\nconst selectedArticle = validArticles[0];\n\nconsole.log('========== 選中的新聞 ==========');\nconsole.log('標題:', selectedArticle.title);\nconsole.log('URL:', selectedArticle.url);\n\n// 建立輸出資料\nconst outputData = {\n  ...inputData,\n  title: selectedArticle.title,\n  description: selectedArticle.description,\n  url: selectedArticle.url,\n  source: selectedArticle.source?.name || '未知來源',\n  publishedAt: selectedArticle.publishedAt,\n  author: selectedArticle.author || '未知作者',\n  urlToImage: selectedArticle.urlToImage || '',\n  selectedTopic: selectedTopic,\n  processedAt: getTaiwanTime().toISOString(),\n  totalArticlesFound: articles.length,\n  validArticlesCount: validArticles.length\n};\n\nreturn [{ \n  json: {\n    ...outputData,\n    config: inputData.config,\n    filename: inputData.filename\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1120,
+        0
+      ],
+      "id": "5fcf8c36-9be9-472f-a392-9ff8d515f204",
+      "name": "處理新聞資料"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 從前一個節點（處理新聞資料）取得資料\nconst data = items[0].json;\n\nconst topic = data.selectedTopic || '新聞';\nconst description = data.description || '';\nconst title = data.title || '';\nconst url = data.url || '';\n\n// 組裝完整的 prompt\nconst prompt = `你是一個專業的社群媒體內容創作者，擅長將新聞內容改寫成吸引人的 Facebook 貼文。\n\n請根據以下新聞資訊，撰寫一篇適合 Facebook 發布的貼文：\n\n【新聞主題】${topic}\n【新聞標題】${title}\n【新聞描述】${description}\n【新聞網址】${url}\n\n【建議分享內容格式：】\n\n今天小編看了一些新聞，裡面最值得我重視的是這一篇:\n\n這消息真的讓人眼睛一亮！你是否也覺得在繁忙的生活節奏中，總需要來點讓人耳目一新的話題呢？\n\n今天看到關於「${topic}」的最新動態，其實這件事背後影響的範圍比想像中還要廣！簡單來說，「${description}」。聽起來是不是覺得生活周遭又多了一個值得關注的重點？小編看完後覺得這不僅僅是資訊的更新，更是我們這代人需要稍微留心一下的趨勢呢！\n\n你們對這個話題有什麼看法嗎？是覺得很有感，還是有什麼特別的觀察？快來留言區跟我分享，我們一起討論討論！如果你也覺得這篇內容很有價值，記得分享給身邊的朋友，讓大家一起跟上這波熱門話題！\n\n#${topic} #熱門話題 #生活觀察 #最新資訊 #趨勢分享\n\n📰 新聞標題：${title}\n🔗 完整報導：${url}\n\n---\n\n請依照上述格式和風格撰寫貼文，但可以修改整體結構，要保持親切、口語化、引人入勝的特色。`;\n\nreturn [{\n  json: {\n    ...data,  // 把原本的資料都帶過去\n    aiPrompt: prompt\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        0
+      ],
+      "id": "9a134e2d-27f1-4b2d-a0bf-93a4fe282657",
+      "name": "組裝 AI Prompt"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.aiPrompt }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.8,
+      "position": [
+        480,
+        224
+      ],
+      "id": "b7939f0f-de49-4e0f-ae1d-d4054677a96c",
+      "name": "AI 撰寫貼文"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 生成 HTML 內容\n// 注意：本節點上游只有「AI 撰寫貼文」，新聞資料要從前面節點取\nconst data = $('處理新聞資料').item.json;\nconst config = $('設置配置和檔案名').item.json.config;\nconst facebookPost = items[0]?.json.output || $('AI 撰寫貼文').item.json.output || '貼文內容生成失敗';\n\n// 格式化日期\nconst publishDate = new Date(data.publishedAt).toLocaleString('zh-TW');\nconst generatedDate = new Date(data.processedAt).toLocaleString('zh-TW');\n\n// HTML 樣式設計\nconst htmlContent = `<!DOCTYPE html>\n<html lang=\"zh-TW\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>${data.title}</title>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n            box-sizing: border-box;\n        }\n        \n        body {\n            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            min-height: 100vh;\n            padding: 2rem;\n            color: #333;\n        }\n        \n        .container {\n            max-width: 900px;\n            margin: 0 auto;\n            background: white;\n            border-radius: 12px;\n            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);\n            overflow: hidden;\n        }\n        \n        .header {\n            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n            color: white;\n            padding: 3rem 2rem;\n            text-align: center;\n        }\n        \n        .header h1 {\n            font-size: 2.5rem;\n            margin-bottom: 0.5rem;\n            line-height: 1.3;\n        }\n        \n        .header .category {\n            display: inline-block;\n            background: rgba(255, 255, 255, 0.3);\n            padding: 0.5rem 1rem;\n            border-radius: 20px;\n            font-size: 0.9rem;\n            margin-top: 1rem;\n        }\n        \n        .meta-info {\n            background: #f8f9fa;\n            padding: 1.5rem 2rem;\n            border-bottom: 1px solid #eee;\n            display: grid;\n            grid-template-columns: 1fr 1fr;\n            gap: 1rem;\n        }\n        \n        .meta-item {\n            font-size: 0.9rem;\n        }\n        \n        .meta-item strong {\n            color: #667eea;\n            display: block;\n            margin-bottom: 0.3rem;\n        }\n        \n        .content {\n            padding: 3rem 2rem;\n        }\n        \n        .content h2 {\n            color: #667eea;\n            margin-bottom: 1.5rem;\n            font-size: 1.5rem;\n        }\n        \n        .news-title {\n            font-size: 1.3rem;\n            color: #222;\n            margin-bottom: 1rem;\n            line-height: 1.5;\n        }\n        \n        .news-description {\n            color: #555;\n            line-height: 1.8;\n            margin-bottom: 2rem;\n            padding: 1rem;\n            background: #f0f3f9;\n            border-left: 4px solid #667eea;\n        }\n        \n        .facebook-post {\n            background: #f8f9fa;\n            padding: 2rem;\n            border-radius: 8px;\n            margin: 2rem 0;\n            border: 2px dashed #667eea;\n        }\n        \n        .facebook-post h3 {\n            color: #667eea;\n            margin-bottom: 1rem;\n            font-size: 1.1rem;\n        }\n        \n        .post-content {\n            color: #333;\n            line-height: 1.8;\n            white-space: pre-wrap;\n            word-wrap: break-word;\n        }\n        \n        .source-link {\n            margin-top: 2rem;\n            padding-top: 2rem;\n            border-top: 2px solid #eee;\n        }\n        \n        .source-link a {\n            display: inline-block;\n            background: #667eea;\n            color: white;\n            padding: 0.8rem 1.5rem;\n            border-radius: 6px;\n            text-decoration: none;\n            transition: background 0.3s;\n            margin-top: 1rem;\n        }\n        \n        .source-link a:hover {\n            background: #764ba2;\n        }\n        \n        .footer {\n            background: #f8f9fa;\n            padding: 2rem;\n            text-align: center;\n            border-top: 1px solid #eee;\n            font-size: 0.85rem;\n            color: #666;\n        }\n        \n        .generated-badge {\n            display: inline-block;\n            background: #e8f1ff;\n            color: #667eea;\n            padding: 0.5rem 1rem;\n            border-radius: 20px;\n            font-size: 0.85rem;\n            margin-top: 1rem;\n        }\n        \n        @media (max-width: 768px) {\n            .header h1 {\n                font-size: 1.8rem;\n            }\n            \n            .meta-info {\n                grid-template-columns: 1fr;\n            }\n            \n            .content {\n                padding: 1.5rem;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <div class=\"header\">\n            <h1>${data.title}</h1>\n            <div style=\"display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;\">\n                <span class=\"category\">📰 ${data.selectedTopic}</span>\n                <span class=\"category\" style=\"background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\">🎓 ${config.studentId}</span>\n            </div>\n        </div>\n        \n        <div class=\"meta-info\">\n            <div class=\"meta-item\">\n                <strong>新聞來源</strong>\n                ${data.source}\n            </div>\n            <div class=\"meta-item\">\n                <strong>作者</strong>\n                ${data.author}\n            </div>\n            <div class=\"meta-item\">\n                <strong>發布時間</strong>\n                ${publishDate}\n            </div>\n            <div class=\"meta-item\">\n                <strong>內容分類</strong>\n                ${data.selectedTopic}\n            </div>\n        </div>\n        \n        <div class=\"content\">\n            <h2>📌 新聞摘要</h2>\n            <div class=\"news-description\">\n                ${data.description}\n            </div>\n            \n            <h2>📱 Facebook 貼文</h2>\n            <div class=\"facebook-post\">\n                <h3>建議分享內容：</h3>\n                <div class=\"post-content\">${facebookPost}</div>\n            </div>\n            \n            <div class=\"source-link\">\n                <strong>完整新聞報導：</strong><br>\n                <a href=\"${data.url}\" target=\"_blank\">閱讀完整文章 →</a>\n            </div>\n        </div>\n        \n        <div class=\"footer\">\n            <p>日報系統自動生成</p>\n            <p>生成時間：${generatedDate}</p>\n            <span class=\"generated-badge\">學號: ${config.studentId}</span>\n        </div>\n    </div>\n</body>\n</html>`;\n\nconsole.log('HTML 文件已生成');\nconsole.log('確認 config 存在:', !!data.config);\nconsole.log('確認 filename 存在:', !!data.filename);\n\n// 確保 config 和 filename 被保留\nconst outputData = {\n  ...data,\n  htmlContent: htmlContent,\n  facebookPost: facebookPost,\n  config: data.config,\n  filename: data.filename\n};\n\nreturn [{\n  json: outputData\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        224
+      ],
+      "id": "080f80fe-c080-433e-9ae8-e0d0b7197804",
+      "name": "生成 HTML 內容"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 準備 GitHub API 上傳的資料\nconst data = items[0].json;\n// 備援：若上游遺失 config/filename，從原始節點取\nconst htmlContent = data.htmlContent;\nlet filename = data.filename || $('設置配置和檔案名').item.json.filename;\nlet config = data.config || $('設置配置和檔案名').item.json.config;\n\nconsole.log('=== 準備 GitHub 上傳 ===');\nconsole.log('htmlContent 存在:', !!htmlContent);\nconsole.log('filename:', filename);\nconsole.log('config 存在:', !!config);\n\n// 如果 config 不存在，建立備用\nif (!config) {\n  console.log('⚠️ config 不存在，使用備用');\n  config = {\n    repoOwner: 'ntust2026',\n    repoName: 'ntust2026.github.io',\n    filePath: 'news',\n    // githubToken 已移至 Header Auth credential，無需在此設定\n  };\n}\n\n// 如果 filename 不存在，生成一個\nif (!filename) {\n  console.log('⚠️ filename 不存在，自動生成');\n  const now = new Date();\n  const year = now.getFullYear();\n  const month = String(now.getMonth() + 1).padStart(2, '0');\n  const day = String(now.getDate()).padStart(2, '0');\n  const hour = String(now.getHours()).padStart(2, '0');\n  const minute = String(now.getMinutes()).padStart(2, '0');\n  const dateStr = `${year}${month}${day}`;\n  const timeStr = `${hour}${minute}`;\n  const studentId = config?.studentId || 'A123456789';\n  filename = `${dateStr}_${timeStr}_${studentId}.html`;\n}\n\n// 驗證\nif (!htmlContent) {\n  throw new Error('❌ 缺少 htmlContent');\n}\n\n// 轉換 HTML 為 Base64\nconst base64Content = Buffer.from(htmlContent).toString('base64');\n\nconsole.log('✅ 準備完成');\nconsole.log('檔案名稱:', filename);\nconsole.log('Repository:', `${config.repoOwner}/${config.repoName}`);\n\nreturn [{\n  json: {\n    ...data,\n    base64Content: base64Content,\n    uploadPath: `${config.filePath}/${filename}`,\n    uploadUrl: `https://api.github.com/repos/${config.repoOwner}/${config.repoName}/contents/${config.filePath}/${filename}`,\n    config: config,\n    filename: filename\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        224
+      ],
+      "id": "745bc39a-9657-4e29-b1c7-3a608fc27ecd",
+      "name": "準備 GitHub 上傳"
+    },
+    {
+      "parameters": {
+        "method": "PUT",
+        "url": "={{$json.uploadUrl}}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Accept",
+              "value": "application/vnd.github+json"
+            },
+            {
+              "name": "X-GitHub-Api-Version",
+              "value": "2022-11-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "message",
+              "value": "Daily news report - {{ $json.dateStr }}"
+            },
+            {
+              "name": "content",
+              "value": "={{$json.base64Content}}"
+            },
+            {
+              "name": "branch",
+              "value": "main"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1072,
+        224
+      ],
+      "id": "b5284b15-78c4-423a-8c84-5b6324207bbd",
+      "name": "上傳到 GitHub",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "OIopsOZ3lfn4qqJI",
+          "name": "GitHub API Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 取得台灣時間 (UTC+8)\nconst getTaiwanTime = () => {\n  const now = new Date();\n  // 轉換到台灣時區\n  const taiwanTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Taipei' }));\n  return taiwanTime;\n};\n\n// 完成並顯示結果\nconst data = $('準備 GitHub 上傳').item.json;\nconst result = items[0].json;\n\nconsole.log('========== 上傳結果 ==========');\nconsole.log('狀態碼:', result.statusCode || result.status);\nconsole.log('上傳的檔案:', data.filename);\nconsole.log('Repository:', `${data.config.repoOwner}/${data.config.repoName}`);\n\nconst success = result.statusCode === 201 || result.status === 201;\n\nreturn [{\n  json: {\n    success: success,\n    filename: data.filename,\n    dateStr: data.dateStr,\n    studentId: data.config.studentId,\n    topic: data.selectedTopic,\n    newsTitle: data.title,\n    fileUrl: `https://github.com/${data.config.repoOwner}/${data.config.repoName}/blob/main/${data.config.filePath}/${data.filename}`,\n    rawUrl: `https://raw.githubusercontent.com/${data.config.repoOwner}/${data.config.repoName}/main/${data.config.filePath}/${data.filename}`,\n    message: success ? '✅ 成功上傳到 GitHub!' : '❌ 上傳失敗，請檢查 GitHub Token',\n    timestamp: getTaiwanTime().toISOString()\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        224
+      ],
+      "id": "abe189b5-59c8-48f6-a117-8c3798b60607",
+      "name": "完成處理"
+    },
+    {
+      "parameters": {
+        "model": "mistral-medium-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        640,
+        416
+      ],
+      "id": "3a6ce2d0-6960-4b42-aa34-00450887cf06",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "XJRB0OJpav0dFwD7",
+          "name": "Mistral20260430"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "daysInterval": 5,
+              "triggerAtHour": 6,
+              "triggerAtMinute": 25
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        400,
+        0
+      ],
+      "id": "76afb274-562f-4f32-b1b2-3588cffd3930",
+      "name": "每5日上午6:25點觸發"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        464,
+        416
+      ],
+      "id": "cd0484dd-a422-4959-92e5-8516a7ce918e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "OKY8hauBPlSDthcB",
+          "name": "Google Gemini(PaLM) Api account 5"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "設置配置和檔案名": {
+      "main": [
+        [
+          {
+            "node": "隨機選擇主題",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "隨機選擇主題": {
+      "main": [
+        [
+          {
+            "node": "取得新聞",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "取得新聞": {
+      "main": [
+        [
+          {
+            "node": "處理新聞資料",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "處理新聞資料": {
+      "main": [
+        [
+          {
+            "node": "組裝 AI Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI 撰寫貼文": {
+      "main": [
+        [
+          {
+            "node": "生成 HTML 內容",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "生成 HTML 內容": {
+      "main": [
+        [
+          {
+            "node": "準備 GitHub 上傳",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "準備 GitHub 上傳": {
+      "main": [
+        [
+          {
+            "node": "上傳到 GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "上傳到 GitHub": {
+      "main": [
+        [
+          {
+            "node": "完成處理",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "每5日上午6:25點觸發": {
+      "main": [
+        [
+          {
+            "node": "設置配置和檔案名",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI 撰寫貼文",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "組裝 AI Prompt": {
+      "main": [
+        [
+          {
+            "node": "AI 撰寫貼文",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9a54f116-0b4b-4b2e-a467-773a4820b258",
+  "meta": {
+    "instanceId": "9f99c0b38d61fd40b3986982e7369bc021df64168a734c9319139faf1a12f037"
+  },
+  "id": "KnhTsPm0RJHVLaUy",
+  "tags": []
+}
