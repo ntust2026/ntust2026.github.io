@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI聊天機器人涉冒充醫護 賓州控告Character.ai違法執業</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .header .category {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .meta-info {
+            background: #f8f9fa;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .meta-item {
+            font-size: 0.9rem;
+        }
+        
+        .meta-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        .content {
+            padding: 3rem 2rem;
+        }
+        
+        .content h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .news-title {
+            font-size: 1.3rem;
+            color: #222;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .news-description {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f0f3f9;
+            border-left: 4px solid #667eea;
+        }
+        
+        .facebook-post {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 2px dashed #667eea;
+        }
+        
+        .facebook-post h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .post-content {
+            color: #333;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .source-link {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+        
+        .source-link a {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .source-link a:hover {
+            background: #764ba2;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .generated-badge {
+            display: inline-block;
+            background: #e8f1ff;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .meta-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI聊天機器人涉冒充醫護 賓州控告Character.ai違法執業</h1>
+            <span class="category">📰 新聞</span>
+        </div>
+        
+        <div class="meta-info">
+            <div class="meta-item">
+                <strong>新聞來源</strong>
+                Yahoo Entertainment
+            </div>
+            <div class="meta-item">
+                <strong>作者</strong>
+                service@sunmedia.tw (商傳媒 SUN MEDIA)
+            </div>
+            <div class="meta-item">
+                <strong>發布時間</strong>
+                2026/5/6 上午3:27:03
+            </div>
+            <div class="meta-item">
+                <strong>內容分類</strong>
+                新聞
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>📌 新聞摘要</h2>
+            <div class="news-description">
+                圖／本報AI製圖（示意圖）商傳媒｜康語柔／綜合外電報導賓夕法尼亞州（Pa.）官員正採取行動，規範人工智慧（AI）系統與消費者互動的方式，特別是在醫療建議方面。該州州長喬什·夏皮羅（Josh Shapiro）已對AI聊天機器人平台Character.ai提起訴訟，指控該平台允許其AI生成的人格冒充執業專業人士，包括醫療提供者。 這項法律行動凸顯了各界日益擔憂...
+            </div>
+            
+            <h2>📱 Facebook 貼文</h2>
+            <div class="facebook-post">
+                <h3>建議分享內容：</h3>
+                <div class="post-content">過去3小時，小編看了一些新聞，裡面最值得我重視的是這一篇：👀
+
+你有沒有發現最近的天氣越來越「極端」？不是太熱就是太冷，不是大雨傾盆就是乾旱無比？原來這背後可能藏著一個更大的「氣候密碼」！根據最新研究顯示，{{ $json.description }} 這不僅影響我們的日常生活，更可能改變未來的環境生態！
+
+想想看，如果這樣的趨勢持續下去，我們的夏天可能會變得更長、冬天更短，甚至一些動植物可能面臨生存危機。小編覺得，現在開始關注環境議題真的超重要的！從節能減碳、減少塑膠使用，到支持永續品牌，每個人都能為地球盡一份心力喔～
+
+你對這個議題有什麼看法呢？歡迎在下方留言分享你的想法！🌍💬
+
+#氣候變遷 #環境保護 #永續生活 #地球需要你 #綠色行動
+
+📰 新聞標題：{{ $json.title }}
+🔗 完整報導：{{ $json.url }}</div>
+            </div>
+            
+            <div class="source-link">
+                <strong>完整新聞報導：</strong><br>
+                <a href="https://tw.stock.yahoo.com/news/ai%E8%81%8A%E5%A4%A9%E6%A9%9F%E5%99%A8%E4%BA%BA%E6%B6%89%E5%86%92%E5%85%85%E9%86%AB%E8%AD%B7-%E8%B3%93%E5%B7%9E%E6%8E%A7%E5%91%8Acharacter-ai%E9%81%95%E6%B3%95%E5%9F%B7%E6%A5%AD-032703165.html" target="_blank">閱讀完整文章 →</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>日報系統自動生成</p>
+            <p>生成時間：2026/5/7 上午3:28:47</p>
+            <span class="generated-badge">學號: A123456789</span>
+        </div>
+    </div>
+</body>
+</html>
