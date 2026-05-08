@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Germany Itinerary 2026 — Summary</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#f4f1ea;--surface:#fff;--surface2:#faf8f3;--border:#ddd6c8;--border-light:#ede8de;--forest:#2c4a2c;--forest-light:#3d6b3d;--gold:#9a7830;--gold-bg:#fdf8ee;--text:#2a2420;--text-muted:#7a6e60;--text-light:#a09488;--transit-bg:#f0ede6;--transit-border:#c0b8a8;--beer-amber:#b87820;--beer-bg:#fef9ee;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Noto Sans TC',sans-serif;font-size:14px;line-height:1.5;}
+  .header{background:linear-gradient(160deg,#2c4a2c 0%,#3d6136 60%,#4a7040 100%);color:white;padding:26px 40px 22px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;border-bottom:4px solid var(--gold);}
+  .header-eyebrow{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(200,168,75,.8);margin-bottom:5px;}
+  .header-title{font-family:'Playfair Display',serif;font-size:1.6rem;line-height:1.2;color:#f8f4ed;}
+  .header-title span{color:#e8c870;font-style:italic;}
+  .header-meta{display:flex;gap:14px;flex-wrap:wrap;}
+  .meta-pill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:5px 14px;font-size:.76rem;color:rgba(245,240,232,.9);white-space:nowrap;}
+  .meta-pill span{color:#e8c870;font-weight:500;}
+  .wrapper{max-width:1020px;margin:0 auto;padding:26px 22px 48px;}
+  .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:6px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.07);}
+  table{width:100%;border-collapse:collapse;}
+  thead tr th{background:var(--forest);color:rgba(245,240,232,.88);font-size:.66rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;padding:11px 13px;text-align:left;border-right:1px solid rgba(255,255,255,.1);}
+  thead tr th:last-child{border-right:none;}
+  .col-day{width:50px;}.col-date{width:120px;}.col-route{width:160px;}.col-act{width:auto;}.col-accom{width:200px;}
+  tbody tr{border-bottom:1px solid var(--border-light);}
+  tbody tr:last-child{border-bottom:none;}
+  tbody tr:hover{background:var(--surface2);}
+  tbody tr.transit{background:var(--transit-bg);}
+  tbody tr.transit:hover{background:#ebe8e0;}
+  tbody tr.transit td{color:var(--text-muted);}
+  td{padding:12px 13px;vertical-align:top;border-right:1px solid var(--border-light);font-size:.84rem;}
+  td:last-child{border-right:none;}
+  .td-day{text-align:center;background:var(--gold-bg);border-right:3px solid var(--gold)!important;}
+  .transit .td-day{background:var(--transit-bg);border-right-color:var(--transit-border)!important;}
+  .day-n{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--gold);line-height:1;}
+  .transit .day-n{color:var(--text-light);}
+  .day-lbl{font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-light);}
+  .date-main{font-weight:500;font-size:.83rem;}
+  .date-wd{font-size:.7rem;color:var(--text-muted);margin-top:2px;}
+  .route-from{font-weight:500;font-size:.82rem;}
+  .route-to{font-size:.8rem;color:var(--text-muted);margin-top:2px;display:flex;align-items:center;gap:5px;}
+  .rarr{color:var(--gold);font-size:.7rem;}
+  .dist{display:inline-flex;align-items:center;gap:4px;background:#f0f5f0;border:1px solid #c0d4c0;border-radius:3px;padding:2px 7px;font-size:.67rem;color:var(--forest-light);margin-top:4px;}
+  .act-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+  .act-item{display:flex;gap:8px;align-items:flex-start;}
+  .act-n{width:18px;height:18px;border-radius:50%;background:var(--gold-bg);border:1px solid rgba(154,120,48,.3);font-size:.6rem;color:var(--gold);font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .act-time{font-size:.69rem;color:var(--gold);font-weight:500;letter-spacing:.05em;margin-bottom:1px;}
+  .act-text{font-size:.83rem;line-height:1.55;}
+  .act-text strong{color:var(--forest);font-weight:600;}
+  .act-item.beer .act-n{background:var(--beer-bg);border-color:rgba(184,120,32,.3);color:#9a6010;}
+  .act-item.beer .act-text strong{color:var(--beer-amber);}
+  .act-item.dinner .act-n{background:#fef5f0;border-color:rgba(180,80,40,.3);color:#a04020;}
+  .tag{display:inline-flex;align-items:center;gap:3px;border-radius:3px;padding:2px 7px;font-size:.67rem;margin-top:3px;}
+  .tag-beer{background:var(--beer-bg);border:1px solid rgba(184,120,32,.3);color:#9a6010;}
+  .tag-dinner{background:#fef5f0;border:1px solid rgba(180,80,40,.3);color:#a04020;}
+  .tag-spa{background:#eef4fa;border:1px solid rgba(42,74,106,.25);color:#2a4a6a;}
+  .sub-opts{margin-top:4px;display:flex;flex-direction:column;gap:3px;}
+  .sub-opt{display:flex;gap:6px;font-size:.78rem;color:var(--text-muted);}
+  .sub-lbl{font-size:.64rem;color:var(--gold);font-weight:700;flex-shrink:0;margin-top:2px;}
+  .accom-name{font-weight:600;color:var(--forest);font-size:.83rem;}
+  .accom-note{font-size:.74rem;color:var(--text-muted);margin-top:3px;line-height:1.5;}
+  .price{color:var(--forest);font-weight:600;}
+  .dash-txt{font-size:.78rem;color:var(--text-light);font-style:italic;}
+  .footer{text-align:center;padding:20px 0 8px;font-size:.73rem;color:var(--text-light);letter-spacing:.1em;}
+</style>
+</head>
+<body>
+<header class="header">
+  <div>
+    <div class="header-eyebrow">Reiseplan · Reise · 2026</div>
+    <div class="header-title">Germany Bavaria & Swabia<br><span>Immersive Cultural Journey</span></div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-pill">Depart <span>2026 / 05 / 24</span></div>
+    <div class="meta-pill">Return <span>2026 / 05 / 31</span></div>
+    <div class="meta-pill">Duration <span>8 Days 7 Nights</span></div>
+    <div class="meta-pill">Transport <span>Car Rental</span></div>
+    <div class="meta-pill">Breakfast <span>Included</span></div>
+  </div>
+</header>
+<div class="wrapper">
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th class="col-day">Day</th>
+          <th class="col-date">Date</th>
+          <th class="col-route">Route</th>
+          <th class="col-act">Itinerary</th>
+          <th class="col-accom">Accommodation / Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- DAY 1 -->
+        <tr class="transit">
+          <td class="td-day"><div class="day-lbl">Day</div><div class="day-n">1</div></td>
+          <td><div class="date-main">05 / 24</div><div class="date-wd">Sunday</div></td>
+          <td><div class="route-from">Taiwan</div><div class="route-to"><span class="rarr">✈</span><span>En Route to Germany</span></div></td>
+          <td><ul class="act-list"><li class="act-item"><div class="act-n">✈</div><div><div class="act-text">Depart from <strong>Taiwan Taoyuan International Airport</strong>, heading to Germany.</div></div></li></ul></td>
+          <td><div class="dash-txt">— Overnight Flight —</div></td>
+        </tr>
+
+        <!-- DAY 2 -->
+        <tr>
+          <td class="td-day"><div class="day-lbl">Day</div><div class="day-n">2</div></td>
+          <td><div class="date-main">05 / 25</div><div class="date-wd">Monday</div></td>
+          <td><div class="route-from">Munich MUC</div><div class="route-to"><span class="rarr">→</span><span>Berchtesgaden</span></div><div class="dist">🚗 200 km</div></td>
+          <td>
+            <ul class="act-list">
+              <li class="act-item"><div class="act-n">1</div><div><div class="act-time">07:30</div><div class="act-text">Pickup at <strong>Munich Airport MUC T2</strong></div></div></li>
+              <li class="act-item"><div class="act-n">2</div><div><div class="act-text">Drive 200 km south to <strong>Berchtesgaden</strong></div></div></li>
+              <li class="act-item"><div class="act-n">3</div><div><div class="act-text">Visit <strong>Königssee (King's Lake)</strong>, take electric boat to St. Bartholomew's Church</div></div></li>
+              <li class="act-item"><div class="act-n">🏊</div><div><div class="act-text">Hotel indoor panoramic pool & outdoor jacuzzi</div><div class="tag tag-spa">💧 Please bring swimwear</div></div></li>
+            </ul>
+          </td>
+          <td>
+            <div class="accom-name">Edelweiss Berchtesgaden Superior</div>
+            <div class="accom-note">Pool · Jacuzzi · Sauna included</div>
+            <div class="accom-note" style="margin-top:4px">Double Room <span class="price">€ 386</span>/room<br>Single Room <span class="price">€ 240</span>/room</div>
+          </td>
+        </tr>
+
+        <!-- DAY 3 -->
+        <tr>
+          <td class="td-day"><div class="day-lbl">Day</div><div class="day-n">3</div></td>
+          <td><div class="date-main">05 / 26</div><div class="date-wd">Tuesday</div></td>
+          <td><div class="route-from">Berchtesgaden</div><div class="route-to"><span class="rarr">→</span><span>Munich</span></div><div class="dist">🚗 160 km</div></td>
+          <td>
+            <ul class="act-list">
+              <li class="act-item"><div class="act-n">1</div><div><div class="act-text">Visit <strong>Kehlsteinhaus (Eagle's Nest)</strong>, elevation 1834m, panoramic Alps views</div></div></li>
+              <li class="act-item"><div class="act-n">2</div><div><div class="act-text">Visit <strong>Salt Mine (Salzbergwerk)</strong>, wear miner outfit, slide underground, boat ride on subterranean salt lake</div></div></li>
+              <li class="act-item"><div class="act-n">3</div><div><div class="act-text">Drive 160 km north back to Munich</div></div></li>
+            </ul>
+          </td>
+          <td>
+            <div class="accom-name">Hampton by Hilton<br>Munich City North</div>
+            <div class="accom-note"><span class="price">€ 98.70</span>/single room/night (4 rooms)</div>
+          </td>
+        </tr>
+
+        <!-- DAY 4 -->
+        <tr>
+          <td class="td-day"><div class="day-lbl">Day</div><div class="day-n">4</div></td>
+          <td><div class="date-main">05 / 27</div><div class="date-wd">Wednesday</div></td>
+          <td><div class="route-from">Munich</div></td>
+          <td>
+            <ul class="act-list">
+              <li class="act-item"><div class="act-n">1</div><div><div class="act-time">12:00–14:00</div><div class="act-text">Tour <strong>BMW Factory</strong></div></div></li>
+              <li class="act-item"><div class="act-n">2</div>
+                <div>
+                  <div class="act-text"><strong>Afternoon — Choose One:</strong></div>
+                  <div class="sub-opts">
+                    <div class="sub-opt"><div class="sub-lbl">A</div><div>Dachau Concentration Memorial (30 km, closes 17:00)</div></div>
+                    <div class="sub-opt"><div class="sub-lbl">B</div><div>Munich Old Town Walking Tour</div></div>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </td>
+          <td>
+            <div class="accom-name">Hampton by Hilton<br>Munich City North</div>
+            <div class="accom-note">Same hotel</div>
+          </td>
+        </tr>
+
+        <!-- DAY 5 -->
+        <tr>
+          <td class="td-day"><div class="day-lbl">Day</div><div class="day-n">5</div></td>
+          <td><div class="date-main">05 / 28</div><div class="date-wd">Thursday</div></td>
+          <td><div class="route-from">Munich</div><div class="route-to"><span class="rarr">→</span><span>Ingolstadt</span></div><div class="route-to"><span class="rarr">→</span><span>Stuttgart</span></div><div class="dist">🚗 ~330 km</div></td>
+          <td>
+            <ul class="act-list">
+              <li class="act-item"><div class="act-n">1</div><div><div class="act-text"><strong>Morning (flexible):</strong> Ingolstadt Village Outlet or Old Town</div></div></li>
+              <li class="act-item"><div class="act-n">2</div><div><div class="act-time">13:00–14:00</div><div class="act-text">Tour <strong>Audi Factory</strong> (Audi Forum Ingolstadt)</div></div></li>
+              <li class="act-item"><div class="act-n">3</div><div><div class="act-text">Drive 250 km southwest to Stuttgart</div></div></li>
+              <li class="act-item beer"><div class="act-n">🍺</div><div><div class="act-time">18:00–20:00</div><div class="act-text"><strong>Dinkelacker Brewery Tour</strong> (Brauereiführung)</div></div></li>
+              <li class="act-item dinner"><div class="act-n">🍽</div><div><div class="act-time">20:15</div><div class="act-text">Dinner at <strong>Brauereigastätte</strong></div><div class="tag tag-dinner">Reservation: qw753I</div></div></li>
+            </ul>
+          </td>
+          <td>
+            <div class="accom-name">Hampton by Hilton<br>Stuttgart City Centre</div>
+            <div class="accom-note">Wolframstraße 27<br><span class="price">€ 107.29</span>/single room (4 rooms)</div>
+          </td>
+        </tr>
+
+        <!-- DAY 6 -->
+        <tr>
+          <td class="td-day"><div class="day-lbl">Day</div><div class="day-n">6</div></td>
+          <td><div class="date-main">05 / 29</div><div class="date-wd">Friday</div></td>
+          <td><div class="route-from">Stuttgart</div><div class="route-to"><span class="rarr">→</span><span>Munich Airport</span></div><div class="dist">🚗 240 km</div></td>
+          <td>
+            <ul class="act-list">
+              <li class="act-item"><div class="act-n">1</div><div><div class="act-time">13:45–15:30</div><div class="act-text">Tour <strong>Mercedes-Benz Factory</strong></div></div></li>
+              <li class="act-item"><div class="act-n">2</div><div><div class="act-text">Drive 240 km to Munich Airport</div></div></li>
+            </ul>
+          </td>
+          <td>
+            <div class="accom-name">Hampton by Hilton<br>Munich Airport South</div>
+            <div class="accom-note"><span class="price">€ 75.30</span>/single room (4 rooms)</div>
+          </td>
+        </tr>
+
+        <!-- DAY 7 -->
+        <tr class="transit">
+          <td class="td-day"><div class="day-lbl">Day</div><div class="day-n">7</div></td>
+          <td><div class="date-main">05 / 30</div><div class="date-wd">Saturday</div></td>
+          <td><div class="route-from">Munich MUC T2</div><div class="route-to"><span class="rarr">✈</span><span>Return Flight</span></div></td>
+          <td>
+            <ul class="act-list">
+              <li class="act-item"><div class="act-n">🚌</div><div><div class="act-text">Take hotel <strong>Shuttle Bus</strong> to T2 (~10 km)</div></div></li>
+              <li class="act-item"><div class="act-n">✈</div><div><div class="act-time">12:00</div><div class="act-text">Arrive <strong>MUC T2</strong>, check-in, baggage drop-off, exit</div></div></li>
+            </ul>
+          </td>
+          <td><div class="dash-txt">— Overnight Flight —</div></td>
+        </tr>
+
+        <!-- DAY 8 -->
+        <tr class="transit">
+          <td class="td-day"><div class="day-lbl">Day</div><div class="day-n">8</div></td>
+          <td><div class="date-main">05 / 31</div><div class="date-wd">Sunday</div></td>
+          <td><div class="route-from">Arrive Taipei</div><div class="route-to"><span class="rarr">🏠</span><span>Journey Complete</span></div></td>
+          <td><ul class="act-list"><li class="act-item"><div class="act-n">🛬</div><div><div class="act-time">06:35</div><div class="act-text">Arrive at <strong>Taiwan Taoyuan International Airport</strong>, journey complete</div></div></li></ul></td>
+          <td><div class="dash-txt">— Return to Taiwan —</div></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- NOTES SECTION -->
+  <div style="max-width:1020px;margin:32px auto 0;padding:0 22px 64px;">
+
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+      <div style="height:1px;flex:1;background:linear-gradient(90deg,rgba(154,120,48,.4),transparent);"></div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);letter-spacing:.08em;">Travel Notes</div>
+      <div style="height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(154,120,48,.4));"></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;">
+
+      <!-- Weather -->
+      <div style="background:#fff;border:1px solid var(--border);border-top:3px solid #4a7a4a;border-radius:5px;padding:16px 18px;">
+        <div style="font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#4a7a4a;margin-bottom:10px;font-family:'EB Garamond',serif;">🌤 Late May Weather</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(74,122,74,.3);">Higher chance of rain (especially in mountain areas) — please carry a <strong>light rain jacket or waterproof外套</strong>.</li>
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(74,122,74,.3);">Long daylight hours in late May; sunset around <strong>21:00</strong>.</li>
+        </ul>
+      </div>
+
+      <!-- Transportation -->
+      <div style="background:#fff;border:1px solid var(--border);border-top:3px solid var(--forest);border-radius:5px;padding:16px 18px;">
+        <div style="font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--forest);margin-bottom:10px;font-family:'EB Garamond',serif;">🚗 Transport & Car Rental</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(44,74,44,.3);">Must bring <strong>Taiwan driver's license + International Driving Permit</strong> (Xiaohui in charge).</li>
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(44,74,44,.3);">BMW, Audi & Benz tours are pre-booked; Germans are punctual. Please <strong>arrive 15 minutes early</strong>; late arrival may result in cancellation without refund.</li>
+        </ul>
+      </div>
+
+      <!-- Local Living -->
+      <div style="background:#fff;border:1px solid var(--border);border-top:3px solid var(--gold);border-radius:5px;padding:16px 18px;">
+        <div style="font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-family:'EB Garamond',serif;">🏠 Local Information</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(154,120,48,.3);">Voltage <strong>230V, Type C/F outlets</strong>. Verify your hair dryer/styling tools support international voltage.</li>
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(154,120,48,.3);">Recommend bringing a <strong>10,000mAh+ power bank</strong> (long drives + navigation drain battery).</li>
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(154,120,48,.3);"><strong>Sundays (5/24, 5/31): All supermarkets & shops closed</strong> — stock up on essentials beforehand.</li>
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(154,120,48,.3);">Ingolstadt Village: spend threshold for <strong>tax refund</strong>; bring passport copy as backup; tax refund also available at airport.</li>
+        </ul>
+      </div>
+
+      <!-- Eagle's Nest & Salt Mine -->
+      <div style="background:#fff;border:1px solid var(--border);border-top:3px solid #5a7a9a;border-radius:5px;padding:16px 18px;">
+        <div style="font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#5a7a9a;margin-bottom:10px;font-family:'EB Garamond',serif;">🧂 Eagle's Nest & Salt Mine</div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;">
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(90,122,154,.3);">Underground tunnels are a constant <strong>12°C</strong> with high humidity. Protective suits are provided, but wear <strong>warm long-sleeve or sweater underneath</strong>.</li>
+          <li style="font-size:.84rem;line-height:1.65;padding-left:12px;border-left:2px solid rgba(90,122,154,.3);">Ground is wet and uneven; <strong>no flip-flops allowed</strong>. Wear sturdy athletic shoes with good grip.</li>
+        </ul>
+      </div>
+
+      <!-- Three Auto Factories -->
+      <div style="background:#fff;border:1px solid var(--border);border-top:3px solid #8b2635;border-radius:5px;padding:16px 18px;grid-column:span 2;">
+        <div style="font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:#8b2635;margin-bottom:10px;font-family:'EB Garamond',serif;">🏎️ Factory Tour Dress Code (BMW · Audi · Benz)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <div style="font-size:.76rem;font-weight:600;color:var(--forest);margin-bottom:5px;">Dress Code (Important)</div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;">
+              <li style="font-size:.83rem;line-height:1.6;padding-left:12px;border-left:2px solid rgba(139,38,53,.3);"><strong>Shoes:</strong> Must wear <strong>fully enclosed flat shoes</strong> (athletic shoes recommended). Flip-flops, sandals, heels, or open-toe shoes are strictly prohibited; improper footwear may result in denied entry.</li>
+              <li style="font-size:.83rem;line-height:1.6;padding-left:12px;border-left:2px solid rgba(139,38,53,.3);"><strong>Clothing:</strong> Long pants recommended to avoid bumping into walkways or catching on equipment.</li>
+            </ul>
+          </div>
+          <div>
+            <div style="font-size:.76rem;font-weight:600;color:var(--forest);margin-bottom:5px;">Photography Policy</div>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:5px;">
+              <li style="font-size:.83rem;line-height:1.6;padding-left:12px;border-left:2px solid rgba(139,38,53,.3);"><strong>No photography or video recording</strong> in factory production line areas.</li>
+              <li style="font-size:.83rem;line-height:1.6;padding-left:12px;border-left:2px solid rgba(139,38,53,.3);">Guides will typically require phones and cameras to be locked in lockers or sealed bags before entry.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<div class="footer">Gute Reise · Bon Voyage · Germany 2026 · 8 Days 7 Nights · Transport: Car Rental · Breakfast: Included</div>
+</div>
+</body>
+</html>
