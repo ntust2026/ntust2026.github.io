@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LUARN - 戴帽子的狐狸 | 品牌官方網站</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #1a1a1a;
+      --white: #fafaf8;
+      --cream: #f5f0e8;
+      --gold: #c9a84c;
+      --gold-light: #e8d5a3;
+      --gray: #8a8a8a;
+      --gray-light: #d4d4d4;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      line-height: 1.8;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid var(--gray-light);
+    }
+    nav .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 2rem;
+      height: 70px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: var(--black);
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--black);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* Hero */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, var(--cream) 0%, var(--white) 100%);
+      text-align: center;
+      padding-top: 70px;
+    }
+    .hero-fox {
+      width: 280px;
+      height: 280px;
+      background: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-fox svg {
+      width: 200px;
+      height: 200px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      letter-spacing: 0.5em;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1rem;
+      letter-spacing: 0.3em;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    /* Section */
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 2rem;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .section-title h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 400;
+    }
+    .section-title p {
+      color: var(--gray);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    /* Brand Story */
+    .brand-story {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      background: var(--cream);
+      padding: 5rem;
+      border-radius: 2px;
+    }
+    .brand-story-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+    .brand-story-text p {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+    .brand-story-visual {
+      display: flex;
+      justify-content: center;
+    }
+    .fox-icon-large {
+      width: 300px;
+      height: 300px;
+      background: var(--black);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fox-icon-large svg { width: 220px; height: 220px; }
+
+    /* Product Grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+    }
+    .product-card {
+      background: var(--cream);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+    }
+    .product-image {
+      height: 280px;
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--gray-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .product-image .placeholder-icon {
+      font-size: 4rem;
+      opacity: 0.15;
+    }
+    .product-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--black);
+      color: var(--white);
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .product-info { padding: 1.5rem; }
+    .product-name {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+    .product-name-en {
+      font-size: 0.75rem;
+      color: var(--gray);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .product-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .product-story {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.7;
+      border-top: 1px solid var(--gray-light);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+    .product-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.6rem 1.8rem;
+      background: var(--black);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: background 0.3s;
+    }
+    .product-btn:hover { background: var(--gold); }
+
+    /* Category Divider */
+    .category-divider {
+      text-align: center;
+      padding: 3rem 0;
+      background: var(--black);
+      color: var(--white);
+    }
+    .category-divider h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--black);
+      color: var(--white);
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+    footer .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      letter-spacing: 0.4em;
+      margin-bottom: 1rem;
+    }
+    footer p {
+      color: var(--gray);
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+    }
+    footer .social {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+    }
+    footer .social a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    footer .social a:hover { color: var(--gold); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; letter-spacing: 0.3em; }
+      .brand-story { grid-template-columns: 1fr; padding: 3rem 2rem; }
+      .brand-story-visual { order: -1; }
+      .fox-icon-large { width: 200px; height: 200px; }
+      .fox-icon-large svg { width: 150px; height: 150px; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">LUARN</div>
+    <ul class="nav-links">
+      <li><a href="#brand">品牌故事</a></li>
+      <li><a href="#products">商品</a></li>
+      <li><a href="#contact">聯絡我們</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-fox">
+    <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Beret -->
+      <ellipse cx="100" cy="55" rx="55" ry="18" fill="#1a1a1a"/>
+      <ellipse cx="100" cy="52" rx="48" ry="14" fill="#2d2d2d"/>
+      <circle cx="128" cy="48" r="5" fill="#1a1a1a"/>
+      <!-- Fox Face -->
+      <path d="M100 65 C70 65 55 85 55 110 C55 135 70 160 100 160 C130 160 145 135 145 110 C145 85 130 65 100 65Z" fill="#e8953d"/>
+      <!-- Ears -->
+      <path d="M65 80 L55 55 L80 72Z" fill="#e8953d"/>
+      <path d="M135 80 L145 55 L120 72Z" fill="#e8953d"/>
+      <path d="M67 77 L60 58 L78 72Z" fill="#f5c89a"/>
+      <path d="M133 77 L140 58 L122 72Z" fill="#f5c89a"/>
+      <!-- Face markings -->
+      <path d="M100 75 C88 75 80 88 80 100 C80 105 82 108 100 108 C118 108 120 105 120 100 C120 88 112 75 100 75Z" fill="#f5c89a"/>
+      <!-- Eyes -->
+      <ellipse cx="82" cy="100" rx="7" ry="8" fill="#1a1a1a"/>
+      <ellipse cx="118" cy="100" rx="7" ry="8" fill="#1a1a1a"/>
+      <circle cx="84" cy="98" r="2.5" fill="#fff"/>
+      <circle cx="120" cy="98" r="2.5" fill="#fff"/>
+      <!-- Nose -->
+      <ellipse cx="100" cy="118" rx="8" ry="6" fill="#1a1a1a"/>
+      <!-- Mouth -->
+      <path d="M92 126 Q100 134 108 126" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+    </svg>
+  </div>
+  <h1>LUARN</h1>
+  <p>The Fox in the Beret</p>
+</div>
+
+<!-- Brand Story -->
+<section id="brand">
+  <div class="brand-story">
+    <div class="brand-story-text">
+      <h2>一隻戴著貝雷帽的狐狸，<br>一個關於風格與態度的故事。</h2>
+      <p>LUARN 誕生於 2023 年，是一個融合法式優雅與街頭態度的當代生活風格品牌。我們相信，穿戴在身上的一切，都是一種自我表達。</p>
+      <p>品牌名稱「LUARN」取自法語「ourson」（小熊）的創意變形，卻以一隻優雅狡黠的狐狸為形象——一隻永遠戴著黑色貝雷帽、眼神深邃而從容的狐狸。</p>
+      <p>LUARN 不只是商品，是一種從容生活的提案。我們的設計語言簡潔而有力，堅持黑、白、米金的中性色調，讓每一件單品都能跨越季節與趨勢，成為你衣櫃中永不退流行的經典。</p>
+    </div>
+    <div class="brand-story-visual">
+      <div class="fox-icon-large">
+        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="100" cy="55" rx="55" ry="18" fill="#e8d5a3"/>
+          <ellipse cx="100" cy="52" rx="48" ry="14" fill="#f5e4c0"/>
+          <circle cx="128" cy="48" r="5" fill="#e8d5a3"/>
+          <path d="M100 65 C70 65 55 85 55 110 C55 135 70 160 100 160 C130 160 145 135 145 110 C145 85 130 65 100 65Z" fill="#c9a84c"/>
+          <path d="M65 80 L55 55 L80 72Z" fill="#c9a84c"/>
+          <path d="M135 80 L145 55 L120 72Z" fill="#c9a84c"/>
+          <path d="M67 77 L60 58 L78 72Z" fill="#e8d5a3"/>
+          <path d="M133 77 L140 58 L122 72Z" fill="#e8d5a3"/>
+          <path d="M100 75 C88 75 80 88 80 100 C80 105 82 108 100 108 C118 108 120 105 120 100 C120 88 112 75 100 75Z" fill="#e8d5a3"/>
+          <ellipse cx="82" cy="100" rx="7" ry="8" fill="#1a1a1a"/>
+          <ellipse cx="118" cy="100" rx="7" ry="8" fill="#1a1a1a"/>
+          <circle cx="84" cy="98" r="2.5" fill="#e8d5a3"/>
+          <circle cx="120" cy="98" r="2.5" fill="#e8d5a3"/>
+          <ellipse cx="100" cy="118" rx="8" ry="6" fill="#1a1a1a"/>
+          <path d="M92 126 Q100 134 108 126" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section id="products">
+  <div class="section-title">
+    <h2>商品系列</h2>
+    <p>The Collection</p>
+  </div>
+
+  <!-- BAGS -->
+  <div class="category-divider"><h3>包袋系列</h3></div>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-image" style="background:#f0ede8;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <rect x="15" y="30" width="50" height="40" rx="2" stroke="#1a1a1a" stroke-width="2"/>
+          <path d="M25 30 Q25 18 40 18 Q55 18 55 30" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <circle cx="40" cy="50" r="8" fill="#c9a84c" opacity="0.6"/>
+        </svg>
+        <span class="product-badge">經典</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">托特包</div>
+        <div class="product-name-en">Tote Bag</div>
+        <div class="product-price">NT$ 1,680</div>
+        <div class="product-story">厚實帆布與精緻金屬的相遇。寬敞的主隔層能容納每日所需，黑色與白色兩款可選，無論是通勤還是週末出行，都能为你的造型加分。狐狸標誌低調印於袋身，為日常单品注入LUARN的優雅態度。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-image" style="background:#ebe7df;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <rect x="10" y="22" width="60" height="44" rx="2" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="10" y1="30" x2="70" y2="30" stroke="#1a1a1a" stroke-width="1.5"/>
+          <rect x="32" y="26" width="16" height="8" rx="1" stroke="#1a1a1a" stroke-width="1.5"/>
+          <circle cx="40" cy="46" r="6" fill="#c9a84c" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">筆電內袋</div>
+        <div class="product-name-en">Laptop Sleeve</div>
+        <div class="product-price">NT$ 1,280</div>
+        <div class="product-story">為你的工作夥伴量身打造。防震緩衝內層保護你的設備，外層採用耐磨帆布，金屬拉鍊滑順耐用。內容量身定制，適合 13-15 吋筆電。是工程師、設計師與所有數位遊牧民族的理想選擇。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPAREL -->
+  <div class="category-divider"><h3>服飾系列</h3></div>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-image" style="background:#f5f0e8;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <path d="M20 25 L30 20 L40 22 L50 20 L60 25 L55 35 L50 33 L50 60 L30 60 L30 33 L25 35Z" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <circle cx="40" cy="14" r="3" fill="#c9a84c"/>
+          <circle cx="40" cy="42" r="5" fill="#c9a84c" opacity="0.5"/>
+        </svg>
+        <span class="product-badge">百搭</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">基本款 T 恤</div>
+        <div class="product-name-en">T-Shirt</div>
+        <div class="product-price">NT$ 880</div>
+        <div class="product-story">以 230g 重磅棉質製作，厚實而不厚重，穿著舒適且挺括有型。羅紋領口久洗不變形，狐狸標誌以精準網印工藝呈現於左胸口。黑色款沉穩內斂，白色款純淨優雅，兩款都是衣櫃裡不可或缺的經典。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-image" style="background:#eceae5;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <path d="M20 25 L30 20 L40 22 L50 20 L60 25 L55 38 L50 36 L50 60 L30 60 L30 36 L25 38Z" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <line x1="30" y1="27" x2="30" y2="38" stroke="#1a1a1a" stroke-width="1.5"/>
+          <line x1="50" y1="27" x2="50" y2="38" stroke="#1a1a1a" stroke-width="1.5"/>
+          <circle cx="40" cy="43" r="5" fill="#c9a84c" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">POLO 衫</div>
+        <div class="product-name-en">Polo Shirt</div>
+        <div class="product-price">NT$ 1,280</div>
+        <div class="product-story">經典 POLO 衫版型，升級為親膚有機棉面料，透氣舒適。領口與袖口以羅紋結構固定，永遠保持俐落線條。左胸前的小狐狸繡花精緻立體，低調展示 LUARN 品牌身份，適合商務休閒多元場景。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-image" style="background:#f0ede8;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <path d="M25 55 L40 20 L55 55Z" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <path d="M25 55 Q40 62 55 55" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <ellipse cx="40" cy="22" rx="18" ry="6" fill="#1a1a1a"/>
+          <ellipse cx="40" cy="22" rx="14" ry="4" fill="#2d2d2d"/>
+          <circle cx="53" cy="20" r="3" fill="#1a1a1a"/>
+          <circle cx="40" cy="40" r="4" fill="#c9a84c" opacity="0.5"/>
+        </svg>
+        <span class="product-badge">限量</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">棒球帽</div>
+        <div class="product-name-en">Cap</div>
+        <div class="product-price">NT$ 980</div>
+        <div class="product-story">六片式結構帽款，以全棉斜紋布製作，帽簷長度適中，修飾臉型。深藍色款在光线下呈現低調光澤，狐狸繡花以立體繡線工藝呈現，層次分明。可調式魔術貼扣設計，適合各種頭圍，是日常造型的亮眼配件。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATIONERY -->
+  <div class="category-divider"><h3>文具系列</h3></div>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-image" style="background:#f5f0e8;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <rect x="20" y="15" width="40" height="55" rx="3" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <line x1="28" y1="25" x2="52" y2="25" stroke="#c9a84c" stroke-width="1.5"/>
+          <line x1="28" y1="32" x2="48" y2="32" stroke="#d4d4d4" stroke-width="1"/>
+          <line x1="28" y1="38" x2="50" y2="38" stroke="#d4d4d4" stroke-width="1"/>
+          <line x1="28" y1="44" x2="46" y2="44" stroke="#d4d4d4" stroke-width="1"/>
+          <line x1="28" y1="50" x2="44" y2="50" stroke="#d4d4d4" stroke-width="1"/>
+          <circle cx="50" cy="60" r="5" fill="#c9a84c" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">精裝筆記本</div>
+        <div class="product-name-en">Notebook</div>
+        <div class="product-price">NT$ 580</div>
+        <div class="product-story">進口書寫紙張，180度攤平線圈裝訂，每一頁都能流暢書寫。硬殼封面倒真皮質感紋路，耐髒且觸感細膩。米白與啞黑兩款可選，狐狸燙金標誌位於封面中央，是記事、繪圖或日記的最佳載體。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-image" style="background:#eceae5;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <rect x="32" y="10" width="16" height="60" rx="8" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <rect x="32" y="10" width="16" height="60" rx="8" fill="#1a1a1a" opacity="0.1"/>
+          <line x1="40" y1="10" x2="40" y2="22" stroke="#c9a84c" stroke-width="2"/>
+          <circle cx="40" cy="70" r="3" fill="#c9a84c"/>
+          <line x1="32" y1="20" x2="28" y2="12" stroke="#1a1a1a" stroke-width="1.5"/>
+          <line x1="48" y1="20" x2="52" y2="12" stroke="#1a1a1a" stroke-width="1.5"/>
+          <line x1="32" y1="28" x2="28" y2="36" stroke="#1a1a1a" stroke-width="1.5"/>
+          <line x1="48" y1="28" x2="52" y2="36" stroke="#1a1a1a" stroke-width="1.5"/>
+          <line x1="32" y1="36" x2="28" y2="44" stroke="#1a1a1a" stroke-width="1.5"/>
+          <line x1="48" y1="36" x2="52" y2="44" stroke="#1a1a1a" stroke-width="1.5"/>
+        </svg>
+        <span class="product-badge">經典</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">鋼筆</div>
+        <div class="product-name-en">Fountain Pen</div>
+        <div class="product-price">NT$ 2,280</div>
+        <div class="product-story">筆身以環保樹酯一體成形，外覆黑色霧面塗層，握位符合人體工學設計。金屬筆夾以金色電鍍處理，刻有 LUARN 品牌名稱。搭配德國原裝筆尖，書寫滑順而帶有輕微彈性，適合日常書寫或簽名，是知識分子的風格配件。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-image" style="background:#f0ede8;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <ellipse cx="40" cy="40" rx="22" ry="28" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <ellipse cx="40" cy="40" rx="18" ry="24" fill="#c9a84c" opacity="0.15"/>
+          <circle cx="40" cy="35" r="8" fill="#c9a84c" opacity="0.4"/>
+          <path d="M35 38 L40 43 L45 38" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+          <path d="M38 48 Q40 52 42 48" stroke="#1a1a1a" stroke-width="1.5" fill="none"/>
+        </svg>
+        <span class="product-badge">收藏</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">金屬徽章</div>
+        <div class="product-name-en">Enamel Pin</div>
+        <div class="product-price">NT$ 380</div>
+        <div class="product-story">以琺瑯工藝手工燒製而成，每一枚都需要經過多次上釉與高溫燒結，表面光滑如寶石，色彩持久不褪。狐狸形象以金色勾勒輪廓，與黑色底色形成強烈對比。背後為安全蝴蝶帽設計，可穩固別於任何布料上。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACCESSORIES -->
+  <div class="category-divider"><h3>配件系列</h3></div>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-image" style="background:#eceae5;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <path d="M22 25 Q22 15 40 15 Q58 15 58 25 L58 55 Q58 62 40 62 Q22 62 22 55Z" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <ellipse cx="40" cy="25" rx="18" ry="10" fill="#fafaf8" stroke="#1a1a1a" stroke-width="1.5"/>
+          <circle cx="40" cy="40" r="8" fill="#c9a84c" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="product-info">
+        <div class="product-name">馬克杯</div>
+        <div class="product-name-en">Mug</div>
+        <div class="product-price">NT$ 680</div>
+        <div class="product-story">特製陶瓷馬克杯，容量 350ml，厚實杯壁保溫效果佳。杯身以高溫釉下彩工藝呈現彩色狐狸與金色品牌名稱，黑白兩色可選。馬克杯是每個早晨的第一件物品，值得擁有一個兼具美感與機能的好選擇。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-image" style="background:#f5f0e8;">
+        <svg viewBox="0 0 80 80" width="120" height="120" fill="none">
+          <rect x="18" y="22" width="44" height="38" rx="4" stroke="#1a1a1a" stroke-width="2" fill="none"/>
+          <line x1="18" y1="32" x2="62" y2="32" stroke="#1a1a1a" stroke-width="1.5"/>
+          <rect x="30" y="28" width="20" height="6" rx="1" stroke="#c9a84c" stroke-width="1"/>
+          <circle cx="50" cy="50" r="6" fill="#c9a84c" opacity="0.4"/>
+        </svg>
+        <span class="product-badge">旅行</span>
+      </div>
+      <div class="product-info">
+        <div class="product-name">護照夾</div>
+        <div class="product-name-en">Passport Holder</div>
+        <div class="product-price">NT$ 1,080</div>
+        <div class="product-story">義大利進口頭層牛皮，柔軟而有結構感。內層設計能容納一本護照、兩張卡片與少量現金，是經常旅行者的優雅伴侶。封面以雷射雕刻工藝呈現狐狸標誌，邊緣以金色車線收邊，每一處細節都體現 LUARN 的品質堅持。</div>
+        <a href="#" class="product-btn">選購</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<footer id="contact">
+  <div class="footer-logo">LUARN</div>
+  <p>THE FOX IN THE BERET</p>
+  <p style="margin-top:1rem;">© 2026 LUARN. All rights reserved.</p>
+  <div class="social">
+    <a href="#">Instagram</a>
+    <a href="#">Facebook</a>
+    <a href="#">LINE</a>
+  </div>
+</footer>
+
+</body>
+</html>
