@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不怕梅雨季 室內景點盡情玩</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .header .category {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .meta-info {
+            background: #f8f9fa;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .meta-item {
+            font-size: 0.9rem;
+        }
+        
+        .meta-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        .content {
+            padding: 3rem 2rem;
+        }
+        
+        .content h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .news-title {
+            font-size: 1.3rem;
+            color: #222;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .news-description {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f0f3f9;
+            border-left: 4px solid #667eea;
+        }
+        
+        .facebook-post {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 2px dashed #667eea;
+        }
+        
+        .facebook-post h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .post-content {
+            color: #333;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .source-link {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+        
+        .source-link a {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .source-link a:hover {
+            background: #764ba2;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .generated-badge {
+            display: inline-block;
+            background: #e8f1ff;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .meta-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>不怕梅雨季 室內景點盡情玩</h1>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <span class="category">📰 新聞</span>
+                <span class="category" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🎓 A123321123</span>
+            </div>
+        </div>
+        
+        <div class="meta-info">
+            <div class="meta-item">
+                <strong>新聞來源</strong>
+                Yahoo Entertainment
+            </div>
+            <div class="meta-item">
+                <strong>作者</strong>
+                未知作者
+            </div>
+            <div class="meta-item">
+                <strong>發布時間</strong>
+                2026/5/12 上午12:00:00
+            </div>
+            <div class="meta-item">
+                <strong>內容分類</strong>
+                新聞
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>📌 新聞摘要</h2>
+            <div class="news-description">
+                記者李佩玲／專題報導 每年5至6月是臺灣梅雨季，雙北地區有不少特色室內景點，如鐵道迷絕不能錯過的「國家鐵道博物館」、能在城市享受森林浴的「臺北典藏植物園」、重現昔日黑金歲月的「瑞三鑛業整煤廠」，以及好吃又好玩的「聖瑪莉丹麥麵包莊園」等，即使下雨天也不會壞了出遊的好心情。 國家鐵道博物館 鐵道迷必訪 國家鐵道博物館所在地是舊臺北機廠，曾擔負臺灣火車維修、組裝、保養、修理等重責；歷經近9年的修復及整備，於去年7月底正式對外開放第一階段的園區與展覽空間。目前開放空間包含柴電工場、總辦公室、技工養成所、材料試驗所、大禮堂…
+            </div>
+            
+            <h2>📱 Facebook 貼文</h2>
+            <div class="facebook-post">
+                <h3>建議分享內容：</h3>
+                <div class="post-content">這是一篇為您精心改寫的 Facebook 貼文，調整了語氣，讓它更具備社群互動感與生活感：
+
+---
+
+今天小編看了一些新聞，裡面最值得我重視的是這一篇：
+
+這消息真的讓人眼睛一亮！你是否也覺得在繁忙的生活節奏中，總需要來點讓人耳目一新的話題呢？
+
+每到 5、6 月的梅雨季，是不是常常讓你週末的行程直接泡湯？😭 別擔心！今天看到關於「全天候室內旅遊提案」的最新動態，其實這件事背後影響的層面，就是能拯救我們這些想出門又怕淋雨的靈魂啊！
+
+簡單來說，雙北其實藏了不少質感室內景點，就算雨下再大，也完全不會影響好心情！
+像是讓鐵道迷瘋狂的「國家鐵道博物館」、能在城市中心來場森林浴的「臺北典藏植物園」、充滿懷舊感的「瑞三鑛業整煤廠」，還有大小朋友都愛的「聖瑪莉丹麥麵包莊園」。不用看老天爺臉色，室內行程一樣能玩得精彩又充實！尤其是花費 9 年修復的國家鐵道博物館，那種歷史厚度真的值得花一個下午去感受。
+
+小編看完後覺得，這不僅僅是資訊的更新，更是我們這代人需要稍微留心一下的「生活充電術」呢！趁著週末，換個方式體驗室內旅遊，說不定會有意想不到的收穫喔！
+
+你們對這個話題有什麼看法嗎？
+你們心目中的「雨天備案口袋名單」有哪些呢？是去博物館看展，還是躲進充滿香氣的烘焙坊？快來留言區跟我分享，我們一起討論討論！
+
+如果你也覺得這篇內容很有價值，記得分享給身邊那些「週末一定要出門走走」的朋友，讓大家一起跟上這波不怕雨的熱門話題！
+
+#梅雨季出遊 #台北景點 #室內景點 #週末去哪兒 #國家鐵道博物館 #生活小確幸 #雨天備案 #生活觀察 #熱門資訊
+
+📰 新聞標題：不怕梅雨季 室內景點盡情玩
+🔗 完整報導：https://consent.yahoo.com/v2/collectConsent?sessionId=1_cc-session_fe1049f4-86eb-4a94-92f8-a47c21150f53</div>
+            </div>
+            
+            <div class="source-link">
+                <strong>完整新聞報導：</strong><br>
+                <a href="https://consent.yahoo.com/v2/collectConsent?sessionId=1_cc-session_fe1049f4-86eb-4a94-92f8-a47c21150f53" target="_blank">閱讀完整文章 →</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>日報系統自動生成</p>
+            <p>生成時間：2026/5/13 上午8:07:20</p>
+            <span class="generated-badge">學號: undefined</span>
+        </div>
+    </div>
+</body>
+</html>
