@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百度發表ERNIE 5.1模型 性能媲美頂級模型且訓練成本大減94%</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .header .category {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .meta-info {
+            background: #f8f9fa;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .meta-item {
+            font-size: 0.9rem;
+        }
+        
+        .meta-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        .content {
+            padding: 3rem 2rem;
+        }
+        
+        .content h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .news-title {
+            font-size: 1.3rem;
+            color: #222;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .news-description {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f0f3f9;
+            border-left: 4px solid #667eea;
+        }
+        
+        .facebook-post {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 2px dashed #667eea;
+        }
+        
+        .facebook-post h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .post-content {
+            color: #333;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .source-link {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+        
+        .source-link a {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .source-link a:hover {
+            background: #764ba2;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .generated-badge {
+            display: inline-block;
+            background: #e8f1ff;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .meta-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>百度發表ERNIE 5.1模型 性能媲美頂級模型且訓練成本大減94%</h1>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <span class="category">📰 新聞</span>
+                <span class="category" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🎓 B11208022</span>
+            </div>
+        </div>
+        
+        <div class="meta-info">
+            <div class="meta-item">
+                <strong>新聞來源</strong>
+                Yahoo Entertainment
+            </div>
+            <div class="meta-item">
+                <strong>作者</strong>
+                service@sunmedia.tw (商傳媒 SUN MEDIA)
+            </div>
+            <div class="meta-item">
+                <strong>發布時間</strong>
+                2026/5/12 上午2:32:00
+            </div>
+            <div class="meta-item">
+                <strong>內容分類</strong>
+                新聞
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>📌 新聞摘要</h2>
+            <div class="news-description">
+                圖／本報AI製圖（示意圖）商傳媒｜林昭衡／綜合外電報導中國科技巨擘百度（Baidu）於上週稍晚正式發表其最新一代人工智慧（AI）模型ERNIE 5.1。該公司宣稱，ERNIE 5.1 在預訓練成本上僅需同級AI模型的百分之六，大幅節省了百分之九十四的成本，同時在多項基準測試中展現出優越性能。 根據《Decrypt》報導，ERNIE 5.1 在全球大型語言模型排行榜 LMArena Search 上名列第四，並在所有中國模型中居於首位，評分達 1,223 分。百度透過「多維彈性預訓練」...
+            </div>
+            
+            <h2>📱 Facebook 貼文</h2>
+            <div class="facebook-post">
+                <h3>建議分享內容：</h3>
+                <div class="post-content">**🔥 AI界的「省錢王」來了！百度ERNIE 5.1性能爆表，訓練成本竟只花6%？**
+
+今天小編在刷新聞時，突然被一則消息**震到下巴掉了**——中國科技巨頭百度（Baidu）剛發布的**ERNIE 5.1模型**，不僅性能直逼全球頂尖AI，訓練成本竟然**只花同級模型的6%**！？這什麼概念？相當於別人花100塊訓練AI，百度只花6塊就達到差不多效果，還**省下94%**的成本！！💸➡️💰
+
+更夯的是，ERNIE 5.1在**全球大型語言模型排行榜（LMArena Search）**上拿下**第四名**，而且是**所有中國AI模型中的NO.1**，評分高達**1,223分**！百度還透露，他們用了什麼「**多維彈性預訓練**」的黑科技，讓效率大爆發。這波操作，簡直是**「又要馬兒跑，又要馬兒不吃草」**的終極版本啊！🐎💨
+
+---
+
+**為什麼這則新聞這麼重要？**
+✅ **AI競賽升級**：百度這次不只追上國際大廠，還**用更低成本**做到！未來AI發展可能不再是「誰燒錢燒得多」的遊戲，而是「誰更聰明」的比賽。
+✅ **產業影響大**：如果AI訓練成本大幅降低，中小企業、新創公司也有機會玩AI了！這可能加速**AI民主化**，讓更多創新應用誕生。
+✅ **中國AI實力展現**：在全球AI競爭中，中國模型首次登頂本土榜單，這代表什麼？技術實力的**逆襲**還是**新一輪競爭**的開始？
+
+---
+
+**你們怎麼看？**
+🤔 百度這次的「省錢大法」會改變AI產業遊戲規則嗎？
+💡 如果AI訓練成本真的能這麼低，你最希望看到什麼應用被開發出來？
+🚀 或者……你覺得這背後有什麼隱憂？（比如：性能真的穩定嗎？資料安全怎麼保證？）
+
+**快來留言區聊聊！** 你的觀點可能比新聞更精彩哦～👇
+
+如果覺得這則消息超級燒腦（或超級厲害），別忘了**分享給朋友**，讓大家一起見證AI界的「省錢革命」！😉
+
+---
+**#AI革命 #百度ERNIE #科技大突破 #省錢王 #中國AI崛起**
+**📰 新聞來源**：[百度發表ERNIE 5.1模型 性能媲美頂級模型且訓練成本大減94%](https://tw.stock.yahoo.com/news/%E7%99%BE%E5%BA%A6%E7%99%BC%E8%A1%A8ernie-5-1%E6%A8%A1%E5%9E%8B-%E6%80%A7%E8%83%BD%E5%AA%B2%E7%BE%8E%E9%A0%82%E7%B4%9A%E6%A8%A1%E5%9E%8B%E4%B8%94%E8%A8%93%E7%B7%B4%E6%88%90%E6%9C%AC%E5%A4%A7%E6%B8%9B94-023200582.html)</div>
+            </div>
+            
+            <div class="source-link">
+                <strong>完整新聞報導：</strong><br>
+                <a href="https://tw.stock.yahoo.com/news/%E7%99%BE%E5%BA%A6%E7%99%BC%E8%A1%A8ernie-5-1%E6%A8%A1%E5%9E%8B-%E6%80%A7%E8%83%BD%E5%AA%B2%E7%BE%8E%E9%A0%82%E7%B4%9A%E6%A8%A1%E5%9E%8B%E4%B8%94%E8%A8%93%E7%B7%B4%E6%88%90%E6%9C%AC%E5%A4%A7%E6%B8%9B94-023200582.html" target="_blank">閱讀完整文章 →</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>日報系統自動生成</p>
+            <p>生成時間：2026/5/13 上午10:35:30</p>
+            <span class="generated-badge">學號: B11208022</span>
+        </div>
+    </div>
+</body>
+</html>
