@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>義大利麵的靈魂告白 - A99999999</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pasta: {
+                            gold: '#E9C46A',
+                            clay: '#F4A261',
+                            tomato: '#E76F51',
+                            dark: '#264653',
+                            teal: '#2A9D8F',
+                        },
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'Noto Sans TC', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        body: ['Noto Sans TC', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'scroll-reveal': 'scroll-reveal linear forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #E9C46A, #E76F51);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-mask {
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+        .abstract-blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #264653;
+            border-radius: 10px;
+        }
+        .content-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .bento-item {
+            transition: transform 0.3s ease;
+        }
+        .bento-item:hover {
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body class="font-body">
+
+    <!-- Abstract Background Decorations -->
+    <div class="abstract-blob bg-pasta-gold w-96 h-96 top-[-10%] left-[-10%] rounded-full"></div>
+    <div class="abstract-blob bg-pasta-tomato w-80 h-80 top-[20%] right-[-5%] rounded-full"></div>
+    <div class="abstract-blob bg-pasta-teal w-64 h-64 bottom-[10%] left-[5%] rounded-full"></div>
+
+    <!-- Sticky Header / ID Tag -->
+    <nav class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md border-b border-white/5">
+        <div class="font-display font-extrabold text-xl tracking-tighter text-pasta-gold">PASTA / LAB</div>
+        <div class="bg-white/10 px-4 py-1 rounded-full text-xs font-mono border border-white/20 tracking-widest">
+            ID: A99999999
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen flex flex-col items-center justify-center text-center px-4 pt-20 overflow-hidden">
+        <div class="absolute inset-0 z-0 hero-mask">
+            <img src='https://opal.google/board/blobs/931d6b50-5267-4a41-bd70-27ba57f42125' alt='media_1' class="w-full h-full object-cover opacity-60 scale-105 animate-pulse" style="animation-duration: 8s" />
+        </div>
+        
+        <div class="relative z-10 max-w-4xl mx-auto space-y-6">
+            <span class="inline-block px-4 py-1 rounded-full bg-pasta-tomato/20 text-pasta-tomato font-bold text-sm uppercase tracking-widest mb-4">The Mediterranean Spirit</span>
+            <h1 class="font-display text-5xl md:text-8xl font-extrabold leading-tight tracking-tight">
+                義大利麵的<br><span class="text-gradient">靈魂告白</span>
+            </h1>
+            <p class="text-lg md:text-2xl text-slate-300 font-light max-w-2xl mx-auto leading-relaxed">
+                從地中海的小麥田到實驗室裡的 3D 列印機，這是一場橫跨千年的工藝展演。
+            </p>
+            <div class="pt-10 flex justify-center">
+                <div class="animate-bounce p-3 border border-white/20 rounded-full">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-24 space-y-32">
+        
+        <!-- Section 1: Introduction -->
+        <section class="content-section flex flex-col md:flex-row gap-12 items-center">
+            <div class="md:w-1/2">
+                <h2 class="font-display text-3xl font-bold text-pasta-gold mb-6 italic">01 / 前言</h2>
+                <div class="glass-card p-8 md:p-12 border-l-4 border-pasta-gold">
+                    <p class="text-xl leading-relaxed text-slate-200">
+                        在深夜的廚房裡，當你隨手抓起一把乾燥麵條丟進沸水時，你可能覺得這只是一頓為了填飽肚子的「碳水化合物」。但在一個知識份子的腦海裡，這盤麵其實是一場橫跨千年的工藝展演，是人類文明在小麥、水分與熱力之間找到的最完美平衡點。
+                    </p>
+                </div>
+            </div>
+            <div class="md:w-1/2 text-slate-400 text-sm italic font-serif space-y-4">
+                <p>“義大利麵從來就不只是「麵條加上醬汁」的排列組合。它背後隱藏著地中海的烈日、航海貿易的冷冽，甚至是現代科技對永續發展的焦慮。”</p>
+                <div class="h-px w-20 bg-pasta-tomato"></div>
+            </div>
+        </section>
+
+        <!-- Section 2: Durum Wheat (Bento Grid) -->
+        <section class="content-section">
+            <h2 class="font-display text-4xl font-extrabold mb-12 text-center">杜蘭小麥的<span class="text-pasta-clay">「硬派」堅持</span></h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="md:col-span-2 glass-card p-8 bento-item bg-gradient-to-br from-pasta-dark/40 to-transparent">
+                    <h3 class="text-2xl font-bold mb-4 text-pasta-gold">麵條的人格特質</h3>
+                    <p class="text-slate-300 leading-relaxed">
+                        要理解義大利麵，首先得認識它的肉體靈魂——杜蘭小麥（Durum Wheat）。這不是一般磨成白麵粉做蛋糕的軟弱小麥，它天生「硬派」，高蛋白質與極強的筋性，是賦予義大利麵那種嚼勁（Al dente）的幕後推手。
+                    </p>
+                </div>
+                <div class="glass-card p-8 bento-item flex flex-col justify-center border-t-4 border-pasta-teal">
+                    <span class="text-4xl mb-4">🥚</span>
+                    <h4 class="font-bold text-pasta-teal mb-2">新鮮麵 Pasta Fresca</h4>
+                    <p class="text-sm text-slate-400">雞蛋與麵粉的柔軟華爾滋。帶著濕潤香氣，口感輕盈，通常出現在北義餐桌。</p>
+                </div>
+                <div class="glass-card p-8 bento-item flex flex-col justify-center border-t-4 border-pasta-gold">
+                    <span class="text-4xl mb-4">🌾</span>
+                    <h4 class="font-bold text-pasta-gold mb-2">乾燥麵 Pasta Secca</h4>
+                    <p class="text-sm text-slate-400">小麥與水的長途旅行。高品質乾燥麵必須經過「低溫慢乾」與「青銅模具」擠壓。</p>
+                </div>
+                <div class="md:col-span-2 glass-card p-8 bento-item bg-pasta-tomato/10">
+                    <h4 class="font-bold text-pasta-tomato mb-3 text-lg underline decoration-2 underline-offset-4">青銅模具的祕密</h4>
+                    <p class="text-slate-300">
+                        青銅模具（Trafilatura al Bronzo）留下的粗糙表面，在微觀世界裡是無數的小溝壑，它們才是抓住醬汁、不讓麵與醬「貌合神離」的神器。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: History & Marco Polo -->
+        <section class="content-section">
+            <div class="relative py-20 px-8 glass-card overflow-hidden">
+                <div class="absolute top-0 right-0 p-10 opacity-10">
+                    <svg class="w-64 h-64 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+                </div>
+                <div class="relative z-10 grid md:grid-cols-2 gap-12">
+                    <div>
+                        <h2 class="text-3xl font-extrabold mb-6 text-pasta-gold">馬可波羅真的被冤枉了？</h2>
+                        <p class="text-slate-200 leading-relaxed mb-6">
+                            我們從小聽說「馬可波羅從中國帶回意麵」的故事，但對不起，在那位冒險家出發前，地中海早就有類似古羅馬 Laganon 的麵食痕跡。目前的歷史大數據告訴我們，這個美麗的傳說其實是 20 世紀美國行銷組織編造出來的「城市傳說」。
+                        </p>
+                        <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
+                            <h4 class="font-bold text-pasta-teal mb-2">真正的技術功臣</h4>
+                            <p class="text-sm text-slate-400">9 世紀的阿拉伯商人為了橫跨沙漠，開發了將麵條乾燥以利長期儲放的技術，並將其帶入西西里島。</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col justify-center space-y-8">
+                        <div class="space-y-4">
+                            <h3 class="text-2xl font-serif italic text-pasta-tomato">番茄革命</h3>
+                            <p class="text-slate-300">
+                                16 世紀傳入歐洲時一度被懷疑有毒的「惡魔果實」，直到 18 世紀末拿坡里人才將其與麵條結合，開啟了現代義大利麵的黃金時代。
+                            </p>
+                        </div>
+                        <div class="h-1 w-full bg-gradient-to-right from-transparent via-white/20 to-transparent"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Shape and Compatibility (Dynamic Layout) -->
+        <section class="content-section space-y-12">
+            <div class="text-center">
+                <h2 class="text-4xl font-extrabold mb-4">流體力學與<span class="text-pasta-teal">靈魂伴侶</span></h2>
+                <p class="text-slate-400">每一種形狀，都有它對應物理世界的使命。</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="group p-8 glass-card border-b-4 border-pasta-gold hover:bg-pasta-gold/5 transition-colors">
+                    <div class="text-5xl mb-6 transform group-hover:rotate-12 transition-transform">🍝</div>
+                    <h3 class="text-2xl font-bold mb-4">管狀麵 (Penne)</h3>
+                    <p class="text-slate-300">空心設計與表面稜紋，是為了捕捉濃郁且帶有肉塊的醬汁。它們是物理上的微型儲藏室。</p>
+                </div>
+                <div class="group p-8 glass-card border-b-4 border-pasta-tomato hover:bg-pasta-tomato/5 transition-colors">
+                    <div class="text-5xl mb-6 transform group-hover:-rotate-12 transition-transform">🥢</div>
+                    <h3 class="text-2xl font-bold mb-4">細長麵 (Spaghetti)</h3>
+                    <p class="text-slate-300">優雅需要簡單的油醋、香料或稀薄醬汁來襯托。太重的配料反而會淹沒它的線條感與 Al Dente 的純粹。</p>
+                </div>
+            </div>
+            <div class="glass-card p-10 text-center bg-pasta-dark/30">
+                <h3 class="text-2xl font-bold text-pasta-gold mb-4 italic">What is Al Dente?</h3>
+                <p class="max-w-2xl mx-auto text-slate-300 leading-relaxed">
+                    所謂的 **Al Dente（牙感）**，則是科學與藝術的交界點——讓麵條中心保留一丁點未透的硬度，這不僅是為了口感，更是為了緩慢釋放澱粉，讓消化的愉悅感能延續得更久。
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 5: The Forbidden List (Taboo) -->
+        <section class="content-section">
+            <h2 class="text-3xl font-extrabold mb-10 border-l-8 border-red-600 pl-6 uppercase tracking-widest">外交危機清單 <span class="text-red-500">STOP!</span></h2>
+            <div class="space-y-6">
+                <div class="glass-card p-6 flex gap-6 items-start hover:bg-red-500/5 transition-all">
+                    <div class="text-3xl text-red-500">🚫</div>
+                    <div>
+                        <h4 class="text-xl font-bold text-white mb-2">Carbonara 禁忌</h4>
+                        <p class="text-slate-400">如果你在培根蛋麵裡加了鮮奶油，這簡直是文明的倒退。正統靈魂：雞蛋、羊奶起司與豬頰肉。</p>
+                    </div>
+                </div>
+                <div class="glass-card p-6 flex gap-6 items-start hover:bg-red-500/5 transition-all">
+                    <div class="text-3xl text-red-500">🚫</div>
+                    <div>
+                        <h4 class="text-xl font-bold text-white mb-2">海鮮與起司的冷戰</h4>
+                        <p class="text-slate-400">水火不容。撒起司粉在海鮮麵上會掩蓋海洋的鮮甜，請放過海鮮。</p>
+                    </div>
+                </div>
+                <div class="glass-card p-6 flex gap-6 items-start hover:bg-red-500/5 transition-all">
+                    <div class="text-3xl text-red-500">🚫</div>
+                    <div>
+                        <h4 class="text-xl font-bold text-white mb-2">餐桌禮儀底線</h4>
+                        <ul class="list-disc list-inside text-slate-400 space-y-1">
+                            <li>絕對不能折斷麵條（象徵生活的完整）</li>
+                            <li>煮麵水要像海水一樣鹹</li>
+                            <li>煮麵絕對不准加油（醬汁會掛不住！）</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Future Pasta (Sci-Fi Aesthetic) -->
+        <section class="content-section relative">
+            <div class="absolute inset-0 bg-blue-500/5 rounded-3xl -rotate-1 scale-105"></div>
+            <div class="relative glass-card p-12 border-pasta-teal/30">
+                <h2 class="font-display text-4xl font-extrabold mb-12 text-pasta-teal">未來派義大利麵 <span class="text-xs font-mono align-top text-slate-500">2050.EXE</span></h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 bg-pasta-teal/20 rounded-lg flex items-center justify-center text-pasta-teal font-bold">01</div>
+                        <h4 class="text-xl font-bold">3D 列印藝術</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">透過 BluRhapsody 技術，列印出幾何結構極其複雜的麵條，創造出前所未有的觸覺層次。</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 bg-pasta-teal/20 rounded-lg flex items-center justify-center text-pasta-teal font-bold">02</div>
+                        <h4 class="text-xl font-bold">新型蛋白</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">螺旋藻、鷹嘴豆甚至是「昆蟲粉」被混入麵團，提供極高的營養密度與環境永續性。</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 bg-pasta-teal/20 rounded-lg flex items-center justify-center text-pasta-teal font-bold">03</div>
+                        <h4 class="text-xl font-bold">精準監測</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">利用 AgroSat 衛星系統監測小麥，應對氣候變遷，確保每一口麵的品質穩定。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: Conclusion & Interaction -->
+        <section class="content-section text-center max-w-3xl mx-auto space-y-12">
+            <div class="space-y-6">
+                <h2 class="text-4xl font-extrabold">在平凡中尋找<br><span class="text-pasta-gold">不平凡的滋味</span></h2>
+                <p class="text-slate-300 text-lg leading-relaxed">
+                    義大利麵不僅是一道家常菜，它更是一面鏡子，反映了人類對傳統的堅守與對未來的探索。從地中海的小麥田到實驗室，這盤麵正不斷進化，卻始終保留著那份最純粹的溫暖。
+                </p>
+            </div>
+            
+            <div class="glass-card p-10 border-dashed border-pasta-gold/40">
+                <p class="text-xl font-bold mb-8">你是哪一派？</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button class="px-8 py-3 rounded-full bg-pasta-gold text-slate-900 font-bold hover:bg-white transition-all shadow-lg shadow-pasta-gold/20">
+                        Al Dente 鐵粉
+                    </button>
+                    <button class="px-8 py-3 rounded-full border border-white/20 font-bold hover:bg-white/10 transition-all">
+                        偷偷加鮮奶油的「異教徒」
+                    </button>
+                </div>
+                <p class="mt-8 text-slate-400 text-sm italic">歡迎在下方留言，讓我們在美味的辯論中持續進化。</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer-like Author Tag (Not a legal footer) -->
+    <div class="max-w-6xl mx-auto px-6 pb-20">
+        <div class="flex items-center justify-between opacity-50 text-xs tracking-[0.3em] font-mono border-t border-white/10 pt-8">
+            <div>WRITTEN BY A99999999</div>
+            <div>GASTRONOMY & SCIENCE 2024</div>
+        </div>
+    </div>
+
+    <script>
+        // Scroll Animation Logic
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Add some mouse move effect for the blobs
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            const blobs = document.querySelectorAll('.abstract-blob');
+            blobs.forEach((blob, index) => {
+                const speed = (index + 1) * 20;
+                blob.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
