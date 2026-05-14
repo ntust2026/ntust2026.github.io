@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【台北必吃】詹記麻辣火鍋全攻略 - 現代感部落格</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#E11D48',
+                            dark: '#0F172A',
+                            accent: '#F43F5E',
+                            gold: '#F59E0B',
+                            glass: 'rgba(255, 255, 255, 0.03)'
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Outfit', 'Noto Sans TC', 'sans-serif'],
+                        body: ['Noto Sans TC', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #020617;
+            color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FB7185 0%, #E11D48 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .scroll-indicator {
+            height: 4px;
+            background: linear-gradient(90deg, #FB7185, #E11D48);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            width: 0%;
+        }
+        ::selection {
+            background: #E11D48;
+            color: white;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-brand-red selection:text-white">
+
+    <div id="scroll-bar" class="scroll-indicator"></div>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-brand-dark z-10"></div>
+            <img src='https://opal.google/board/blobs/e5765709-3461-42a9-8dad-accd1a591141' alt='media_1' class="w-full h-full object-cover scale-105 animate-float opacity-80" />
+        </div>
+
+        <div class="relative z-20 container mx-auto px-6 text-center animate-fade-in-up">
+            <div class="inline-block px-4 py-1 mb-6 rounded-full border border-brand-red/50 bg-brand-red/10 text-brand-red text-sm font-semibold tracking-wider uppercase">
+                Taipei Gourmet Guide
+            </div>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-black leading-tight mb-8">
+                詹記麻辣火鍋<br/><span class="text-gradient">全攻略</span>
+            </h1>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-6 text-slate-400 font-light tracking-wide">
+                <span>學號：M11818118</span>
+                <span class="hidden md:block">|</span>
+                <span>台北 · 傳說中的果凍鴨血</span>
+            </div>
+            <div class="mt-12 flex justify-center">
+                <a href="#content" class="p-4 rounded-full border border-white/20 hover:bg-white/10 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Area -->
+    <main id="content" class="container mx-auto px-6 py-24 max-w-6xl">
+        
+        <!-- Intro Bento Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-24">
+            <div class="md:col-span-8 glass-card p-10 rounded-3xl relative overflow-hidden group">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-red/10 rounded-full blur-3xl group-hover:bg-brand-red/20 transition-all duration-500"></div>
+                <h2 class="text-3xl font-bold mb-6 text-white flex items-center">
+                    <span class="w-10 h-1 bg-brand-red mr-4"></span>
+                    沒吃過別說你懂鴨血！
+                </h2>
+                <p class="text-slate-300 text-lg leading-relaxed mb-6">
+                    在台北，火鍋不只是一頓飯，有時更像是一場集體參與的行為藝術。而這場藝術的領頭羊，莫過於那間讓無數老饕在深夜對著螢幕刷預約頁面的「詹記麻辣火鍋」。
+                </p>
+                <p class="text-slate-300 text-lg leading-relaxed">
+                    當我們談論詹記的「神級果凍鴨血」時，我們談論的是一種純粹的物理極致。不同於坊間鴨血常帶有的氣孔或韌性，詹記的鴨血呈現一種幾乎不存在於現實的「滑順」感。它像是一塊深色的紅寶石，靜靜臥在吸飽湯汁的豆腐旁，入口即化，沒有一絲腥味。
+                </p>
+            </div>
+            <div class="md:col-span-4 flex flex-col gap-8">
+                <div class="bg-gradient-to-br from-brand-red to-rose-700 p-8 rounded-3xl shadow-xl shadow-brand-red/10 h-full flex flex-col justify-end">
+                    <span class="text-5xl font-display font-bold mb-4">90s</span>
+                    <p class="font-medium text-white/90">充滿幽默感的空間策展，帶你重返 90 年代的台式美學。</p>
+                </div>
+                <div class="glass-card p-8 rounded-3xl border-brand-red/30">
+                    <h3 class="text-xl font-bold mb-3 text-brand-red">雙寶傳奇</h3>
+                    <p class="text-sm text-slate-400">鴨血與豆腐的完美組合，老饕心中無法逾越的天花板。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Section with Asymmetric Layout -->
+        <div class="relative mb-32">
+            <div class="absolute -left-24 top-0 text-[10rem] font-display font-black text-white/5 pointer-events-none select-none">1994</div>
+            <div class="flex flex-col md:flex-row items-center gap-16">
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-4xl font-bold mb-8 text-white tracking-tight">
+                        巷弄傳奇變身潮牌：<br/><span class="text-brand-red">詹記的 30 年進化史</span>
+                    </h2>
+                    <div class="space-y-6 text-slate-300 leading-relaxed">
+                        <p>
+                            詹記的故事要從 1994 年的新莊說起。那時的詹啟玄先生在巷口默默鑽研鴨血的製作工藝，靠著極致的職人精神，讓鄰居們即便排隊也要一親芳澤。
+                        </p>
+                        <p>
+                            真正讓詹記跨越時代、走向年輕世代視野的關鍵，是第二代接班人詹巽智所導入的「美學經營」。這是一種近乎「叛逆」的轉型：他們保留了台味，卻賦予其現代設計語彙。
+                        </p>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 glass-card p-4 rounded-3xl">
+                     <div class="aspect-video rounded-2xl bg-brand-dark/50 flex items-center justify-center border border-white/5 relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-red/20 to-transparent"></div>
+                        <div class="text-center z-10 p-8">
+                            <span class="text-sm uppercase tracking-widest text-brand-red font-bold mb-2 block">Iconic Design</span>
+                            <h4 class="text-2xl font-bold text-white mb-4">經典電梯門</h4>
+                            <p class="text-slate-400 text-sm">象徵著從老派巷弄到摩登城市的魔幻躍遷。</p>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multi-dimensional Analysis Section -->
+        <section class="mb-32">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-display font-bold mb-4 text-white">是真強還是跟風？</h2>
+                <p class="text-slate-400">解構詹記成功的三大核心維度</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-10 rounded-[2.5rem] hover:translate-y-[-10px] transition-all duration-500 hover:shadow-2xl hover:shadow-brand-red/10">
+                    <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-8">
+                        <svg class="w-8 h-8 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04m12.422 4.983a11.083 11.083 0 00-4.718-2.552m-1.102 4.676c.153 1.328-1.047 2.482-2.379 2.482s-2.532-1.154-2.379-2.482c.131-1.134.758-1.99 1.565-2.553m3.193 5.035c.58.347 1.173.614 1.765.798M15 10a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">核心硬實力</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">美食評論家公認其鴨血入味程度極難被超越，這不是單靠行銷能達到的，而是三十年如一日的技術積累。</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="glass-card p-10 rounded-[2.5rem] hover:translate-y-[-10px] transition-all duration-500 border-brand-red/20 shadow-xl shadow-brand-red/5">
+                    <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-8">
+                        <svg class="w-8 h-8 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">台式摩登設計</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">捕捉台灣當代設計與傳統結合點，帶著笨拙卻幽默的時髦衝突感，讓國內外觀光客趨之若鶩。</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="glass-card p-10 rounded-[2.5rem] hover:translate-y-[-10px] transition-all duration-500 hover:shadow-2xl hover:shadow-brand-red/10">
+                    <div class="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center mb-8">
+                        <svg class="w-8 h-8 text-brand-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">極致運營力</h3>
+                    <p class="text-slate-400 leading-relaxed text-sm">即便客滿，服務節奏依然精準快速。這種穩定的營運能力，支撐起了品牌的高端尊榮感。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Opinion Section -->
+        <div class="mb-32">
+            <div class="glass-card p-12 rounded-[3rem] border-l-4 border-l-brand-red">
+                <h2 class="text-3xl font-bold mb-10">關於詹記的小牢騷：<span class="font-light text-slate-400 italic">運氣 vs 日常</span></h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <p class="text-slate-300 leading-relaxed">
+                            在台北，「搶詹記」幾乎演變成了一種類似搶張學友演唱會門票的全民運動。這種「極度難訂」也催生了代訂位等亂象，讓人不禁反思，一頓火鍋是否真的需要如此繁複的預約儀式？
+                        </p>
+                    </div>
+                    <div class="bg-brand-dark/50 p-8 rounded-3xl border border-white/5">
+                        <h4 class="text-brand-red font-bold mb-4 uppercase tracking-tighter text-sm">Soul Question</h4>
+                        <blockquote class="text-xl font-medium text-white italic leading-relaxed">
+                            「當我們支付這筆費用時，我們是在買食材？還是在買那一小時的『生活風格』與社會認同？」
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Future & Final Words -->
+        <section class="mb-24">
+            <div class="flex flex-col md:flex-row gap-12 items-center">
+                <div class="w-full md:w-5/12 order-2 md:order-1">
+                    <div class="relative">
+                        <div class="absolute -inset-4 bg-brand-red opacity-10 blur-2xl rounded-full"></div>
+                        <h2 class="text-4xl md:text-5xl font-display font-black text-white mb-8 relative">
+                            詹記宇宙<br/><span class="text-gradient">持續擴張！</span>
+                        </h2>
+                    </div>
+                    <p class="text-slate-300 mb-8 leading-relaxed">
+                        隨著 2024 年西門大慶旗艦店的開幕，300 坪的巨量空間與老建築景觀的結合，宣告了詹記正在邁向「大型旗艦化」經營。這不再只是為了一頓晚餐，而是一場結合景觀、設計與飲食的綜合體驗。
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4 text-sm font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-brand-red"></span>
+                            <span>跨界臺虎精釀聯名</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-brand-red"></span>
+                            <span>進軍流行文化生活品牌</span>
+                        </div>
+                        <div class="flex items-center gap-4 text-sm font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-brand-red"></span>
+                            <span>下一個目標：國際化經營</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full md:w-7/12 order-1 md:order-2">
+                    <div class="relative rounded-3xl overflow-hidden group">
+                        <div class="absolute inset-0 bg-brand-red/10 mix-blend-overlay group-hover:bg-brand-red/0 transition-all duration-700"></div>
+                        <img src='https://opal.google/board/blobs/e5765709-3461-42a9-8dad-accd1a591141' alt='Future Vision' class="w-full h-[500px] object-cover rounded-3xl transform group-hover:scale-105 transition-all duration-700" />
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Quote -->
+        <div class="max-w-3xl mx-auto text-center py-20 border-t border-white/10">
+            <p class="text-2xl md:text-3xl font-display font-medium text-slate-100 leading-relaxed italic">
+                「只要將一件單純的事（比如鴨血）做到極致，並勇敢地賦予它文化想像力，老字號也能化身成最閃耀的明星。」
+            </p>
+            <div class="mt-10 flex flex-col items-center gap-2">
+                <div class="w-12 h-[2px] bg-brand-red"></div>
+                <span class="text-slate-500 text-sm tracking-[0.2em] font-light">M11818118 · FINAL THOUGHTS</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Interactive Elements & Scripts -->
+    <script>
+        // Progress scroll indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-bar').style.width = scrolled + "%";
+        });
+
+        // Intersection Observer for animation
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, .glass-card').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
+
