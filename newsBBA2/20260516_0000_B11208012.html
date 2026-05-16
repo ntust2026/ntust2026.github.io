@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix 打造 AI 動畫工作室　應用最新 AI 技術創造短片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .header .category {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .meta-info {
+            background: #f8f9fa;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .meta-item {
+            font-size: 0.9rem;
+        }
+        
+        .meta-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        .content {
+            padding: 3rem 2rem;
+        }
+        
+        .content h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .news-title {
+            font-size: 1.3rem;
+            color: #222;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .news-description {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f0f3f9;
+            border-left: 4px solid #667eea;
+        }
+        
+        .facebook-post {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 2px dashed #667eea;
+        }
+        
+        .facebook-post h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .post-content {
+            color: #333;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .source-link {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+        
+        .source-link a {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .source-link a:hover {
+            background: #764ba2;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .generated-badge {
+            display: inline-block;
+            background: #e8f1ff;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .meta-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Netflix 打造 AI 動畫工作室　應用最新 AI 技術創造短片</h1>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <span class="category">📰 新聞</span>
+                <span class="category" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🎓 B11208012</span>
+            </div>
+        </div>
+        
+        <div class="meta-info">
+            <div class="meta-item">
+                <strong>新聞來源</strong>
+                Newmobilelife.com
+            </div>
+            <div class="meta-item">
+                <strong>作者</strong>
+                Andy
+            </div>
+            <div class="meta-item">
+                <strong>發布時間</strong>
+                2026/5/14 下午4:29:19
+            </div>
+            <div class="meta-item">
+                <strong>內容分類</strong>
+                新聞
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>📌 新聞摘要</h2>
+            <div class="news-description">
+                <!-- wp:paragraph {"canvasClassName":"cnvs-block-core-paragraph-1778776101111"} -->
+Netflix 正在建立一個名為 INKubator 的新內部工作室，目標是利用 AI 製作短篇動畫內容。根據最近發佈的多份招聘資訊，Netflix 正在為 INKubator 招募多種職位，包括製作人、軟體工程師和 CG 美術師。雖然 Netflix 尚未公開宣佈該計劃，招聘資訊中有時也將其稱為 INK，但幾份 LinkedIn 個人資料顯示，該…
+            </div>
+            
+            <h2>📱 Facebook 貼文</h2>
+            <div class="facebook-post">
+                <h3>建議分享內容：</h3>
+                <div class="post-content">**🎬【Netflix 要用 AI 顛覆動畫產業了？！】這消息讓小編我整個驚呆！**
+
+嘿！最近在刷新聞時，突然被一則「Netflix 正在秘密打造 AI 動畫工作室」的消息震撼到！😱 你有沒有想過，未來你在 Netflix 上看到的動畫短片，可能是 AI 協助創作的？！
+
+**🔍 這次的重點是：**
+Netflix 正在建立一個叫做 **「INKubator」（暱稱 INK）** 的內部工作室，專門用 AI 技術製作短篇動畫！從招聘資訊來看，他們正在大舉徵才，包括**製作人、軟體工程師、CG 美術師**等等，看起來是要玩真的了！
+
+雖然 Netflix 還沒正式宣佈，但 LinkedIn 上已經有相關人員透露這個計畫，這代表 AI 不只改變電影、遊戲，連動畫產業都要被顛覆了？！🤯
+
+**💬 小編的想法：**
+這到底是創意的新突破，還是會讓傳統動畫師面臨挑戰？AI 真的能創造出有靈魂的動畫嗎？還是只是輔助工具？你覺得呢？
+
+**👇 來留言區聊聊！**
+- 你會看 AI 製作的動畫嗎？
+- 你覺得 AI 會取代人類創作者嗎？
+- 還是這只是科技進步的必然？
+
+如果你也覺得這消息超炸，快分享給你的朋友，讓大家一起討論這個未來趨勢！🚀
+
+---
+**#Netflix #AI動畫 #科技趨勢 #動畫產業 #未來影視**
+📰 完整新聞：[https://www.newmobilelife.com/2026/05/15/netflix-ai-animation-studio-short-film/](https://www.newmobilelife.com/2026/05/15/netflix-ai-animation-studio-short-film/)
+
+---
+**P.S.** 如果 Netflix 真的推出 AI 動畫短片，你會不會第一時間追看？😏 留言告訴我！</div>
+            </div>
+            
+            <div class="source-link">
+                <strong>完整新聞報導：</strong><br>
+                <a href="https://www.newmobilelife.com/2026/05/15/netflix-ai-animation-studio-short-film/" target="_blank">閱讀完整文章 →</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>日報系統自動生成</p>
+            <p>生成時間：2026/5/16 上午8:00:34</p>
+            <span class="generated-badge">學號: B11208012</span>
+        </div>
+    </div>
+</body>
+</html>
