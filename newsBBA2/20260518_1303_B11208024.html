@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT 新增個人財務功能　可連結銀行提供理財建議</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        
+        .header .category {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        
+        .meta-info {
+            background: #f8f9fa;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #eee;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .meta-item {
+            font-size: 0.9rem;
+        }
+        
+        .meta-item strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        .content {
+            padding: 3rem 2rem;
+        }
+        
+        .content h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .news-title {
+            font-size: 1.3rem;
+            color: #222;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        
+        .news-description {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f0f3f9;
+            border-left: 4px solid #667eea;
+        }
+        
+        .facebook-post {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+            border: 2px dashed #667eea;
+        }
+        
+        .facebook-post h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .post-content {
+            color: #333;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .source-link {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #eee;
+        }
+        
+        .source-link a {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin-top: 1rem;
+        }
+        
+        .source-link a:hover {
+            background: #764ba2;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid #eee;
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .generated-badge {
+            display: inline-block;
+            background: #e8f1ff;
+            color: #667eea;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .meta-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ChatGPT 新增個人財務功能　可連結銀行提供理財建議</h1>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <span class="category">📰 新聞</span>
+                <span class="category" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">🎓 B11208024</span>
+            </div>
+        </div>
+        
+        <div class="meta-info">
+            <div class="meta-item">
+                <strong>新聞來源</strong>
+                Unwire.hk
+            </div>
+            <div class="meta-item">
+                <strong>作者</strong>
+                藍骨
+            </div>
+            <div class="meta-item">
+                <strong>發布時間</strong>
+                2026/5/17 下午1:00:12
+            </div>
+            <div class="meta-item">
+                <strong>內容分類</strong>
+                新聞
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>📌 新聞摘要</h2>
+            <div class="news-description">
+                OpenAI 正式推出 ChatGPT 個人財務管理功能，預覽版透過金融科技公司 Plaid，讓用戶連結銀行帳戶和投資組合及信用卡，以獲取個人化財務分析及建議，不過這項功能目前僅向美國 ChatGPT Pro 訂閱用戶開放。
+            </div>
+            
+            <h2>📱 Facebook 貼文</h2>
+            <div class="facebook-post">
+                <h3>建議分享內容：</h3>
+                <div class="post-content">**💰【ChatGPT 要幫你管錢了？！】AI 理財顧問正式上線，但只有「這群人」能用！**
+
+哇賽！今天小編看到一則新聞，真的讓我**瞬間坐直身體**——
+**ChatGPT 竟然開始幫人理財了？！** 😱
+
+不是開玩笑！OpenAI 正式推出 **「個人財務管理功能」**，
+透過金融科技公司 **Plaid**，可以直接連結你的：
+✅ **銀行帳戶**
+✅ **投資組合**
+✅ **信用卡**
+然後 **AI 會幫你分析財務狀況、給出個人化理財建議**！
+
+聽起來超級方便對吧？但……**目前只開放給美國的 ChatGPT Pro 訂閱用戶** 😭
+（所以台灣朋友們，可能還要再等等）
+
+**小編的疑問來了：**
+➡️ 你會願意讓 AI 幫你管錢嗎？還是覺得隱私風險太高？
+➡️ 如果未來這功能開放給所有人，你最希望 AI 幫你做什麼？（自動存錢？投資建議？還是幫你省下每個月的咖啡錢？😂）
+
+快來留言區聊聊！你對 **AI 理財** 的看法是什麼？
+如果覺得這則新聞超有料，別忘了 **分享給身邊的理財小夥伴**，
+讓大家一起討論這個未來趨勢！ 🚀
+
+---
+📰 **新聞來源**：[ChatGPT 新增個人財務功能　可連結銀行提供理財建議](https://unwire.hk/2026/05/17/hatgpt-personal-finance-plaid-pro-users/ai/)
+
+#AI理財 #ChatGPT #金融科技 #理財新趨勢 #未來已來
+#你的錢包準備好了嗎 😏</div>
+            </div>
+            
+            <div class="source-link">
+                <strong>完整新聞報導：</strong><br>
+                <a href="https://unwire.hk/2026/05/17/hatgpt-personal-finance-plaid-pro-users/ai/" target="_blank">閱讀完整文章 →</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>日報系統自動生成</p>
+            <p>生成時間：2026/5/18 下午9:03:53</p>
+            <span class="generated-badge">學號: B11208024</span>
+        </div>
+    </div>
+</body>
+</html>
