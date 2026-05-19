@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>極客學堂：本地版 Claude Code 實戰手冊</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            darkbg: '#0B0F19',
+                            cardbg: '#161D30'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        code, pre {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+</head>
+<body class="bg-cyber-darkbg text-slate-100 min-h-screen transition-colors duration-300">
+
+    <!-- 導航欄 -->
+    <nav class="border-b border-slate-800 bg-cyber-darkbg/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <!-- Logo / SVG -->
+                    <svg class="w-8 h-8 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                    <span class="text-xl font-bold tracking-wider bg-gradient-to-r from-teal-400 to-indigo-400 bg-clip-text text-transparent">
+                        極客學堂 GeeksLab
+                    </span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#quick-start" class="text-slate-300 hover:text-teal-400 transition-colors">快速上手</a>
+                    <a href="#resource-library" class="text-slate-300 hover:text-teal-400 transition-colors">資源下載區</a>
+                    <a href="#config-generator" class="text-slate-300 hover:text-teal-400 transition-colors">配置生成器</a>
+                    <a href="#faq-section" class="text-slate-300 hover:text-teal-400 transition-colors">常見問題 FAQs</a>
+                </div>
+                <div>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-teal-500/10 text-teal-400 border border-teal-500/20">
+                        知識庫：零度解說實戰系列
+                    </span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 橫幅 (Hero Area) -->
+    <header class="relative overflow-hidden py-16 sm:py-24 border-b border-slate-800 bg-gradient-to-b from-slate-950 to-cyber-darkbg">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,184,166,0.08),transparent_70%)]"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <span class="px-3 py-1 text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 rounded-full uppercase tracking-wider">
+                100% 離線免 API · 學生專屬 AI Agent 指南
+            </span>
+            <h1 class="mt-6 text-4xl sm:text-6xl font-black tracking-tight text-white leading-none">
+                用本地模型驅動 <br class="sm:hidden">
+                <span class="bg-gradient-to-r from-teal-400 via-emerald-400 to-indigo-400 bg-clip-text text-transparent">
+                    Claude Code 桌面版
+                </span>
+            </h1>
+            <p class="mt-6 max-w-2xl mx-auto text-base sm:text-lg text-slate-400">
+                本教學基於開源工具 <strong class="text-teal-300">CC Switch</strong> 與 <strong class="text-teal-300">Ollama</strong>，
+                將本地運行的 AI 模型偽裝成 Claude 官方 API。讓身為學生的你，無需負擔高昂的 API 費用，也能在本地進行高效率代碼重構、自動改 bug 及開發！
+            </p>
+
+            <!-- 搜尋框區 (Search Box) -->
+            <div class="mt-10 max-w-xl mx-auto">
+                <div class="relative">
+                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
+                        <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <input type="text" id="global-search" 
+                           placeholder="搜尋資源、下載指令或常見問題... (例如: Ollama, 虛擬化, Gemma)" 
+                           class="block w-full rounded-2xl border-0 bg-slate-900/80 py-4 pl-12 pr-4 text-white ring-1 ring-inset ring-slate-800 placeholder:text-slate-500 focus:ring-2 focus:ring-teal-500 text-sm sm:text-base transition">
+                </div>
+                <div class="mt-2 text-xs text-slate-500 flex justify-center gap-2">
+                    <span>熱門搜尋：</span>
+                    <button onclick="fillSearch('WSL')" class="hover:text-teal-400 underline">WSL</button> •
+                    <button onclick="fillSearch('Ollama')" class="hover:text-teal-400 underline">Ollama</button> •
+                    <button onclick="fillSearch('偽裝')" class="hover:text-teal-400 underline">偽裝模型</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- 流程概覽 (Quick Start Steps) -->
+        <section id="quick-start" class="mb-16">
+            <div class="text-center md:text-left mb-8">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2 justify-center md:justify-start">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 text-sm">01</span>
+                    核心極客部署流程
+                </h2>
+                <p class="text-slate-400 mt-1">跟着這四個關鍵步驟，打通本地模型與 Claude Code 桌面版之間的橋樑。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="bg-cyber-cardbg/50 p-6 rounded-2xl border border-slate-800 relative">
+                    <div class="text-xs font-bold text-indigo-400 uppercase mb-2">步驟 1</div>
+                    <h3 class="text-lg font-semibold text-white mb-2">環境準備</h3>
+                    <p class="text-slate-400 text-sm">安裝 Git 及 Ollama 本地模型運行器。並確認主機 BIOS 已開啟 Windows 虛擬化功能。</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="bg-cyber-cardbg/50 p-6 rounded-2xl border border-slate-800">
+                    <div class="text-xs font-bold text-indigo-400 uppercase mb-2">步驟 2</div>
+                    <h3 class="text-lg font-semibold text-white mb-2">部署代理工具</h3>
+                    <p class="text-slate-400 text-sm">下載並安裝 <strong class="text-teal-400">CC Switch</strong> 與 <strong class="text-emerald-400">Claude Code 桌面版</strong>。這是模型無痛偽裝的核心。</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="bg-cyber-cardbg/50 p-6 rounded-2xl border border-slate-800">
+                    <div class="text-xs font-bold text-indigo-400 uppercase mb-2">步驟 3</div>
+                    <h3 class="text-lg font-semibold text-white mb-2">拉取本地模型</h3>
+                    <p class="text-slate-400 text-sm">在終端機拉取千問（Qwen 3.5）或谷歌 Gemma 4 模型。推薦 8G 顯存跑 9B 尺寸。</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="bg-cyber-cardbg/50 p-6 rounded-2xl border border-slate-800">
+                    <div class="text-xs font-bold text-indigo-400 uppercase mb-2">步驟 4</div>
+                    <h3 class="text-lg font-semibold text-white mb-2">對接與偽裝</h3>
+                    <p class="text-slate-400 text-sm">啟用 CC Switch 本地路由與 Claude 轉發，透過設定檔讓桌面版連上 127.0.0.1 本地網關。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 工具下載與資源庫 (Resource Library) -->
+        <section id="resource-library" class="mb-16 scroll-mt-20">
+            <div class="text-center md:text-left mb-8">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2 justify-center md:justify-start">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 text-sm">02</span>
+                    核心資源庫 & 工具下載
+                </h2>
+                <p class="text-slate-400 mt-1">此區包含本教程所需的所有官方開源工具，以及一鍵拉取模型的終端機指令。</p>
+            </div>
+
+            <!-- 工具卡片區 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="resource-cards-container">
+                <!-- Git Card -->
+                <div class="resource-card bg-cyber-cardbg/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/50 transition-all duration-300" data-keywords="Git 虛擬化 windows環境 下載">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2 py-1 text-xs font-medium rounded-md bg-slate-800 text-slate-300">環境必備</span>
+                            <span class="text-xs text-slate-500">v2.x+</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Git 基礎環境</h3>
+                        <p class="text-slate-400 text-sm mb-4">
+                            一切代碼管理與專案代理的必備基礎。如果你是新電腦，必須首先安裝此程式。
+                        </p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://git-scm.com/download/win" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 text-sm font-semibold text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition gap-2">
+                            前往 Git 官網下載
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CC Switch Card -->
+                <div class="resource-card bg-cyber-cardbg/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/50 transition-all duration-300" data-keywords="CC Switch ccswitch 偽裝 路由 網關 中轉 轉發 下載">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2 py-1 text-xs font-medium rounded-md bg-teal-500/10 text-teal-400">本期核心</span>
+                            <span class="text-xs text-slate-500">開源專案</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">CC Switch 轉發器</h3>
+                        <p class="text-slate-400 text-sm mb-4">
+                            負責進行 API 一花接木。將桌面端 Claude Code 的請求攔截並偷偷轉發到 Ollama 本地網頁。
+                        </p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://github.com/" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 text-sm font-semibold text-white bg-teal-500 hover:bg-teal-600 rounded-xl transition gap-2">
+                            下載 CC Switch
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Ollama Card -->
+                <div class="resource-card bg-cyber-cardbg/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/50 transition-all duration-300" data-keywords="Ollama ollama 本地模型 運行器 下載">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2 py-1 text-xs font-medium rounded-md bg-slate-800 text-slate-300">模型託管</span>
+                            <span class="text-xs text-slate-500">v0.2.x+</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Ollama 運行端</h3>
+                        <p class="text-slate-400 text-sm mb-4">
+                            極其好用的本地 AI 模型運行工具，對新手友善。支持 GPU 加速與一鍵命令行部署模型。
+                        </p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://ollama.com/" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 text-sm font-semibold text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition gap-2">
+                            下載 Ollama 客戶端
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Claude Code Card -->
+                <div class="resource-card bg-cyber-cardbg/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between hover:border-teal-500/50 transition-all duration-300" data-keywords="Claude Code claude desktop 桌面版 下載">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-2 py-1 text-xs font-medium rounded-md bg-indigo-500/10 text-indigo-400">強大 Agent</span>
+                            <span class="text-xs text-slate-500">官方客戶端</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Claude Code 桌面版</h3>
+                        <p class="text-slate-400 text-sm mb-4">
+                            具備極強代碼分析能力的 AI Agent 工具，可完美分析你的全專案依賴與自動讀寫文件。
+                        </p>
+                    </div>
+                    <div class="mt-4">
+                        <a href="https://github.com/" target="_blank" class="w-full inline-flex justify-center items-center px-4 py-2 text-sm font-semibold text-white bg-slate-800 hover:bg-slate-700 rounded-xl transition gap-2">
+                            下載 Claude Code
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 熱門本地模型指令（學生快捷複製） -->
+            <div class="mt-8 bg-slate-900 rounded-2xl p-6 border border-slate-800">
+                <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    快捷終端機拉取模型指令
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Qwen 3.5 Card -->
+                    <div class="bg-cyber-darkbg p-4 rounded-xl border border-slate-800 flex flex-col justify-between" id="model-qwen">
+                        <div>
+                            <span class="text-xs font-semibold text-teal-400 bg-teal-400/10 px-2 py-0.5 rounded">中輕量首選 · 顯存 8G 內可用</span>
+                            <h4 class="text-md font-bold text-slate-100 mt-2">千問 Qwen 3.5 (9B)</h4>
+                            <p class="text-xs text-slate-400 mt-1">
+                                體積僅 6.6GB，推薦大部份家用或學習用筆電。支援基礎的寫代碼與指令生成。
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center bg-slate-900 rounded-lg p-2 border border-slate-700">
+                            <code class="text-xs text-amber-400 flex-1 overflow-x-auto whitespace-nowrap mr-2">ollama run qwen3.5:9b</code>
+                            <button onclick="copyToClipboard('ollama run qwen3.5:9b', this)" class="bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 px-3 py-1.5 rounded-md transition-all shrink-0">
+                                複製
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Gemma 4 Card -->
+                    <div class="bg-cyber-darkbg p-4 rounded-xl border border-slate-800 flex flex-col justify-between" id="model-gemma">
+                        <div>
+                            <span class="text-xs font-semibold text-indigo-400 bg-indigo-400/10 px-2 py-0.5 rounded">代碼完整度高 · 推薦 24G 顯存</span>
+                            <h4 class="text-md font-bold text-slate-100 mt-2">Gemma 4 (26B)</h4>
+                            <p class="text-xs text-slate-400 mt-1">
+                                體積約 17GB。代碼生成效果優秀、理解長上下文更穩固，能流暢完成跑酷遊戲等複雜任務。
+                            </p>
+                        </div>
+                        <div class="mt-4 flex items-center bg-slate-900 rounded-lg p-2 border border-slate-700">
+                            <code class="text-xs text-amber-400 flex-1 overflow-x-auto whitespace-nowrap mr-2">ollama run gemma4:26b</code>
+                            <button onclick="copyToClipboard('ollama run gemma4:26b', this)" class="bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 px-3 py-1.5 rounded-md transition-all shrink-0">
+                                複製
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 配置生成器 (Config Generator) -->
+        <section id="config-generator" class="mb-16 scroll-mt-20">
+            <div class="text-center md:text-left mb-8">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2 justify-center md:justify-start">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 text-sm">03</span>
+                    CC Switch 與系統配置生成器
+                </h2>
+                <p class="text-slate-400 mt-1">專為學生定製的自動化指南：點選你的操作系統與運行模型，快速產生所需的環境配置！</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- 交互選單 -->
+                <div class="lg:col-span-5 bg-cyber-cardbg/80 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-6">⚙️ 自定義環境參數</h3>
+                    
+                    <!-- 系統選擇 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-slate-300 mb-2">1. 選擇你的主機操作系統</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button onclick="setOS('windows')" id="btn-os-windows" class="os-btn flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-teal-500 bg-teal-500/10 text-white font-medium transition-all">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M0 3.449L9.75 2.1v9.451H0V3.449zM0 12.45h9.75v9.45L0 20.551v-8.101zM10.8 1.95L24 0v11.55H10.8V1.95zM10.8 12.45H24v11.55l-13.2-1.95v-9.6z"/></svg>
+                                Windows
+                            </button>
+                            <button onclick="setOS('mac')" id="btn-os-mac" class="os-btn flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-slate-800 hover:border-slate-700 text-slate-400 transition-all">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/></svg>
+                                macOS / Linux
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 模型選擇 -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-semibold text-slate-300 mb-2">2. 你在 Ollama 下載的模型</label>
+                        <select id="select-model" onchange="updateConfigPreview()" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500">
+                            <option value="qwen3.5:9b" selected>Qwen 3.5 (9B) - 6.6GB [推薦]</option>
+                            <option value="gemma4:26b">Gemma 4 (26B) - 17GB [高配]</option>
+                            <option value="deepseek-v2:latest">DeepSeek V2 [精簡型]</option>
+                        </select>
+                    </div>
+
+                    <!-- CC Switch 設定引導 -->
+                    <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 text-xs space-y-3">
+                        <div class="font-bold text-teal-400 text-sm">💡 CC Switch 控制面板操作指南：</div>
+                        <div class="flex gap-2">
+                            <span class="text-teal-400 font-bold">1.</span>
+                            <span class="text-slate-400">點擊「新增自定義供應商」，API KEY 任意填寫（如 123456）。</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-teal-400 font-bold">2.</span>
+                            <span class="text-slate-400">請求地址填入 <code>http://127.0.0.1:11434/v1</code>。</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-teal-400 font-bold">3.</span>
+                            <span class="text-slate-400">格式切換為「OpenAI兼容」，認證選「API KEY」。</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="text-teal-400 font-bold">4.</span>
+                            <span class="text-slate-400">將 <strong>Sonnet 模型</strong> 與 <strong>Haiku 模型</strong> 的映射值填入你的本地模型名稱。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 生成結果顯示 -->
+                <div class="lg:col-span-7 bg-cyber-cardbg/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                產出的配置指令 / 註冊表補丁
+                            </h3>
+                            <span id="badge-os" class="px-2 py-0.5 text-xs rounded bg-teal-500/10 text-teal-400 uppercase font-bold">WINDOWS</span>
+                        </div>
+
+                        <!-- 步驟與指令 -->
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="text-xs font-semibold text-slate-400 mb-1">【第一步：終端機啟動模型】</h4>
+                                <div class="relative bg-slate-900 rounded-xl p-3 border border-slate-800 text-sm">
+                                    <code id="code-terminal" class="text-amber-400">ollama run qwen3.5:9b</code>
+                                    <button onclick="copyGeneratedCode('code-terminal', this)" class="absolute right-3 top-2 bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 px-2 py-1 rounded">複製</button>
+                                </div>
+                            </div>
+
+                            <div id="windows-registry-section">
+                                <h4 class="text-xs font-semibold text-slate-400 mb-1">【第二步：導出配置 Windows 註冊表注入修飾】</h4>
+                                <p class="text-xs text-slate-400 mb-2">
+                                    在 Claude Code 啟用開發者模式導出 <code>.reg</code> 註冊表後，滑鼠右鍵「記事本開啟」，在底部的 JSON 中強制注入以下映射模型選項。
+                                </p>
+                                <div class="relative bg-slate-900 rounded-xl p-3 border border-slate-800 text-xs max-h-48 overflow-y-auto">
+                                    <pre id="code-reg" class="text-slate-300">"models" = "[\"qwen3.5:9b\", \"gemma4:26b\"]"</pre>
+                                    <button onclick="copyGeneratedCode('code-reg', this)" class="absolute right-3 top-2 bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 px-2 py-1 rounded">複製</button>
+                                </div>
+                            </div>
+
+                            <div id="mac-config-section" class="hidden">
+                                <h4 class="text-xs font-semibold text-slate-400 mb-1">【第二步：macOS / Linux 配置文件修改】</h4>
+                                <p class="text-xs text-slate-400 mb-2">
+                                    導出你的 Claude Code 配置文件（通常為 plist 或 json），並確保你的模型段落被更新為：
+                                </p>
+                                <div class="relative bg-slate-900 rounded-xl p-3 border border-slate-800 text-xs max-h-48 overflow-y-auto">
+                                    <pre id="code-mac-json" class="text-slate-300">{\n  "models": ["qwen3.5:9b", "gemma4:26b"]\n}</pre>
+                                    <button onclick="copyGeneratedCode('code-mac-json', this)" class="absolute right-3 top-2 bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 px-2 py-1 rounded">複製</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 p-4 bg-emerald-500/10 rounded-xl border border-emerald-500/20 text-xs text-emerald-400">
+                        <strong>🎉 重要提示：</strong> 部署完成後，請徹底關閉 Claude Code 桌面客戶端（可在右下角任務欄中點選退出），接著重新啟動，選擇「本地網關 (Local Gateway)」以開始使用！
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常見問題 FAQ (Accordion) -->
+        <section id="faq-section" class="mb-16 scroll-mt-20">
+            <div class="text-center md:text-left mb-8">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2 justify-center md:justify-start">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-400 text-sm">04</span>
+                    疑難雜症 FAQ 面板
+                </h2>
+                <p class="text-slate-400 mt-1">遇到報錯不要慌！這裡整理了學生在本地配置中最容易碰到的問題與排查步驟。</p>
+            </div>
+
+            <!-- FAQ 折疊區 -->
+            <div class="space-y-4" id="faq-container">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item bg-cyber-cardbg/50 border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300" data-keywords="虛擬化 WSL Windows功能 Hyper-V 報錯 故障">
+                    <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="font-bold text-white text-base sm:text-lg pr-4">Windows 下報錯顯示虛擬平台未啟用、或是 WSL 無法運行？</span>
+                        <span class="faq-icon text-teal-400 transition-transform duration-300 transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                        這是因為運行本地模型或環境需要電腦硬體的虛擬化支持。請按照以下步驟修復：
+                        <ul class="list-disc list-inside mt-2 space-y-1 text-slate-300">
+                            <li>重啟電腦進入 BIOS，將 <strong class="text-teal-400">Intel Virtual Technology (VT-x)</strong> 或 <strong class="text-teal-400">AMD-V</strong> 設置為 Enabled。</li>
+                            <li>在 Windows 搜尋欄搜尋「啟用或關閉 Windows 功能」。</li>
+                            <li>勾選「Windows 虛擬機器監控平台」、「適用於 Linux 的 Windows 子系統 (WSL)」以及「虛擬機器平台」。</li>
+                            <li>點選確定並重啟電腦即可。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="faq-item bg-cyber-cardbg/50 border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300" data-keywords="模型 差別 推薦 選擇 千問 顯存 筆電 26B 9B gemma qwen">
+                    <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="font-bold text-white text-base sm:text-lg pr-4">這幾款本地模型 (千問 3.5 9B、Gemma 4 26B) 該怎麼選擇？</span>
+                        <span class="faq-icon text-teal-400 transition-transform duration-300 transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                        模型的選擇主要取決於你的電腦顯示卡顯存（VRAM）：
+                        <ul class="list-disc list-inside mt-2 space-y-1 text-slate-300">
+                            <li><strong class="text-teal-400">千問 Qwen 3.5 (9B)</strong>：體積僅約 6.6GB，極為省資源。只要顯存在 8G 左右就可以非常流暢地運行，是絕大部分學生筆電的首選。</li>
+                            <li><strong class="text-teal-400">Gemma 4 (26B)</strong>：適合擁有 16G 甚至 24G 顯存的高端遊戲筆電或桌機，在代碼邏輯的理解、指令規劃等進階場景表現更佳。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="faq-item bg-cyber-cardbg/50 border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300" data-keywords="連不上 網關 代理 端口 11434 轉發 無回應 123456">
+                    <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="font-bold text-white text-base sm:text-lg pr-4">為什麼在 Claude Code 中點選本地網關一直加載中或沒反應？</span>
+                        <span class="faq-icon text-teal-400 transition-transform duration-300 transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                        請檢查以下幾項設置：
+                        <ol class="list-decimal list-inside mt-2 space-y-1 text-slate-300">
+                            <li>確保 <strong class="text-teal-400">CC Switch</strong> 與 <strong class="text-teal-400">Ollama</strong> 主程式都在運行，且 CC Switch 的「路由功能」總開關已開啟。</li>
+                            <li>檢查你的網關地址填寫是否正確。CC Switch 的服務地址一般為 <code>http://127.0.0.1:2333</code> 等，而 API Key 必須與你在註冊表/配置中注入的完全一致。</li>
+                            <li>確認你在 CC Switch 的自定義廠商配置中，有將 <code class="text-amber-400">sonnet</code> 和 <code class="text-amber-400">haiku</code> 對應的模型名稱修改為你本地運行的正確名稱（例如 <code>qwen3.5:9b</code>）。</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="faq-item bg-cyber-cardbg/50 border border-slate-800 rounded-2xl overflow-hidden transition-all duration-300" data-keywords="安全 隱私 免翻牆 斷網 下載">
+                    <button class="w-full flex items-center justify-between p-6 text-left focus:outline-none" onclick="toggleFaq(this)">
+                        <span class="font-bold text-white text-base sm:text-lg pr-4">這種方案是真的 100% 離線和安全嗎？</span>
+                        <span class="faq-icon text-teal-400 transition-transform duration-300 transform">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-slate-400 text-sm leading-relaxed border-t border-slate-800/50 pt-4">
+                        <strong class="text-teal-400">是的！</strong> 這正是這個玩法最吸引人的地方。
+                        <p class="mt-2 text-slate-300">
+                            由於模型是完全下載在你的電腦硬碟上，並且利用 Ollama 本地加載運行，CC Switch 的轉發也是在本地 <code>127.0.0.1</code> 迴路完成，你的敏感代碼與專案檔案絕不會被上傳到外網任何伺服器。即使在拔掉網線、無網路環境下也能流暢運行 AI Agent 幫你寫代碼！
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-12 text-center text-sm text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="mb-4">極客學堂 © 2026. 基於開源項目 CC Switch 進行的公益學生教育指南</p>
+            <p class="text-xs text-slate-600">聲明：本站所有知識與步驟提煉自 B 站「零度解說」精品教學影片。代碼與模型歸原開發者所有。</p>
+        </div>
+    </footer>
+
+    <!-- 自定義 Toast 通知組件 -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-teal-500 text-slate-950 px-4 py-3 rounded-xl shadow-2xl font-semibold text-sm flex items-center gap-2 transform translate-y-20 opacity-0 transition-all duration-300">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span id="toast-message">複製成功！</span>
+    </div>
+
+    <!-- 交互 JavaScript 邏輯 -->
+    <script>
+        // 全局狀態
+        let selectedOS = 'windows';
+
+        // 初始化
+        window.onload = function() {
+            updateConfigPreview();
+            setupSearch();
+        };
+
+        // 搜尋功能
+        function setupSearch() {
+            const searchInput = document.getElementById('global-search');
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase().trim();
+                
+                // 篩選資源卡片
+                const cards = document.querySelectorAll('.resource-card');
+                cards.forEach(card => {
+                    const keywords = card.getAttribute('data-keywords').toLowerCase();
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const desc = card.querySelector('p').textContent.toLowerCase();
+                    if (keywords.includes(query) || title.includes(query) || desc.includes(query)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 篩選 FAQ
+                const faqItems = document.querySelectorAll('.faq-item');
+                faqItems.forEach(item => {
+                    const keywords = item.getAttribute('data-keywords').toLowerCase();
+                    const question = item.querySelector('button').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-content').textContent.toLowerCase();
+                    if (keywords.includes(query) || question.includes(query) || answer.includes(query)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // 填充搜尋詞
+        function fillSearch(term) {
+            const searchInput = document.getElementById('global-search');
+            searchInput.value = term;
+            // 觸發輸入事件
+            const event = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(event);
+            // 滾動到對應區域
+            document.getElementById('resource-library').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 複製到剪貼簿功能
+        function copyToClipboard(text, btnElement) {
+            // 使用 iframe 安全的相容性備份方法
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('已複製到剪貼簿：' + text);
+            } catch (err) {
+                showToast('複製失敗，請手動複製！');
+            }
+            document.body.removeChild(textarea);
+
+            // 按鈕動畫效果
+            if (btnElement) {
+                const originalText = btnElement.textContent;
+                btnElement.textContent = '已複製!';
+                btnElement.classList.add('bg-emerald-600', 'text-white');
+                setTimeout(() => {
+                    btnElement.textContent = originalText;
+                    btnElement.classList.remove('bg-emerald-600', 'text-white');
+                }, 1500);
+            }
+        }
+
+        // 配置生成器專用複製
+        function copyGeneratedCode(id, btnElement) {
+            const text = document.getElementById(id).textContent;
+            copyToClipboard(text, btnElement);
+        }
+
+        // 自定義 Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgSpan = document.getElementById('toast-message');
+            msgSpan.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        // 切換 OS 選擇
+        function setOS(os) {
+            selectedOS = os;
+            const winBtn = document.getElementById('btn-os-windows');
+            const macBtn = document.getElementById('btn-os-mac');
+            const badge = document.getElementById('badge-os');
+
+            const winSection = document.getElementById('windows-registry-section');
+            const macSection = document.getElementById('mac-config-section');
+
+            if (os === 'windows') {
+                winBtn.className = "os-btn flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-teal-500 bg-teal-500/10 text-white font-medium transition-all";
+                macBtn.className = "os-btn flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-slate-800 hover:border-slate-700 text-slate-400 transition-all";
+                badge.textContent = "WINDOWS";
+                badge.className = "px-2 py-0.5 text-xs rounded bg-teal-500/10 text-teal-400 uppercase font-bold";
+                winSection.classList.remove('hidden');
+                macSection.classList.add('hidden');
+            } else {
+                macBtn.className = "os-btn flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-teal-500 bg-teal-500/10 text-white font-medium transition-all";
+                winBtn.className = "os-btn flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-slate-800 hover:border-slate-700 text-slate-400 transition-all";
+                badge.textContent = "MACOS / LINUX";
+                badge.className = "px-2 py-0.5 text-xs rounded bg-indigo-500/10 text-indigo-400 uppercase font-bold";
+                winSection.classList.add('hidden');
+                macSection.classList.remove('hidden');
+            }
+            updateConfigPreview();
+        }
+
+        // 更新配置預覽區
+        function updateConfigPreview() {
+            const modelSelect = document.getElementById('select-model');
+            const modelValue = modelSelect.value;
+
+            // 1. 終端機指令更新
+            const terminalCode = document.getElementById('code-terminal');
+            terminalCode.textContent = `ollama run ${modelValue}`;
+
+            // 2. Windows 註冊表注入更新
+            const regCode = document.getElementById('code-reg');
+            regCode.textContent = `"models" = "[\\"${modelValue}\\", \\"claude-3-5-sonnet-20241022\\"]"`;
+
+            // 3. macOS / Linux JSON 更新
+            const macCode = document.getElementById('code-mac-json');
+            macCode.textContent = `{\n  "models": [\n    "${modelValue}",\n    "claude-3-5-sonnet-20241022"\n  ]\n}`;
+        }
+
+        // FAQ 折疊展開
+        function toggleFaq(btn) {
+            const parent = btn.parentElement;
+            const content = parent.querySelector('.faq-content');
+            const icon = parent.querySelector('.faq-icon');
+
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
+        }
+    </script>
+</body>
+</html>
