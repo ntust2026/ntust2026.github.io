@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAPAYA 智能數位學習院 | 學生生產力與 AI 資源中心</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        darkBg: '#0b0f19',
+                        darkCard: '#151d30',
+                        darkBorder: '#222f47'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #0b0f19;
+            color: #f3f4f6;
+        }
+        /* 隱藏滾動條但保持功能 */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Anki 3D 卡片翻轉效果 */
+        .card-container {
+            perspective: 1000px;
+        }
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-flipped {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- 頂部通知導覽 -->
+    <header class="sticky top-0 z-50 bg-darkBg/90 backdrop-blur-md border-b border-darkBorder transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="p-2.5 bg-brand-500/10 rounded-xl border border-brand-500/30">
+                    <svg class="w-6 h-6 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-wider bg-gradient-to-r from-brand-500 to-teal-400 bg-clip-text text-transparent">PAPAYA 智能數位學習院</h1>
+                    <p class="text-xs text-gray-400">專為學生打造的一站式生產力與 AI 知識庫</p>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex space-x-1 text-sm font-medium">
+                <button onclick="switchTab('dashboard')" class="nav-tab px-4 py-2 rounded-lg text-brand-500 bg-brand-500/10 transition-colors" id="tab-dashboard">
+                    主頁儀表板
+                </button>
+                <button onclick="switchTab('resources')" class="nav-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" id="tab-resources">
+                    精選資源庫
+                </button>
+                <button onclick="switchTab('faq')" class="nav-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" id="tab-faq">
+                    常見問答(FAQ)
+                </button>
+                <button onclick="switchTab('chat')" class="nav-tab px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" id="tab-chat">
+                    NotebookLM 對話
+                </button>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <div class="relative hidden sm:block">
+                    <input type="text" id="global-search" oninput="handleGlobalSearch(this.value)" placeholder="搜尋工具、知識、攻略..." class="w-64 bg-darkCard border border-darkBorder rounded-xl pl-9 pr-4 py-1.5 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all">
+                    <span class="absolute left-3 top-2.5 text-gray-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </span>
+                </div>
+                
+                <!-- 手機選單按鈕 -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-xl bg-darkCard border border-darkBorder hover:bg-white/5 text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 手機版導覽選單 -->
+    <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-16 bg-darkBg/95 border-b border-darkBorder z-40 px-4 py-4 space-y-2 backdrop-blur-md">
+        <div class="relative mb-3">
+            <input type="text" id="mobile-global-search" oninput="handleGlobalSearch(this.value)" placeholder="搜尋工具、知識、攻略..." class="w-full bg-darkCard border border-darkBorder rounded-xl pl-9 pr-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-brand-500">
+            <span class="absolute left-3 top-3 text-gray-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </span>
+        </div>
+        <button onclick="switchTab('dashboard'); toggleMobileMenu()" class="w-full text-left px-4 py-2.5 rounded-lg text-brand-500 bg-brand-500/10 font-medium">主頁儀表板</button>
+        <button onclick="switchTab('resources'); toggleMobileMenu()" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-white/5 font-medium">精選資源庫</button>
+        <button onclick="switchTab('faq'); toggleMobileMenu()" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-white/5 font-medium">常見問答(FAQ)</button>
+        <button onclick="switchTab('chat'); toggleMobileMenu()" class="w-full text-left px-4 py-2.5 rounded-lg text-gray-300 hover:bg-white/5 font-medium">NotebookLM 對話</button>
+    </div>
+
+    <!-- 主體內容區 -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- 1. 主頁儀表板 -->
+        <section id="section-dashboard" class="space-y-8 animate-fade-in">
+            <!-- 英雄廣告區 -->
+            <div class="relative bg-gradient-to-br from-darkCard to-brand-900/20 border border-darkBorder rounded-2xl p-6 sm:p-10 overflow-hidden shadow-2xl">
+                <div class="absolute -right-12 -bottom-12 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-12 -top-12 w-64 h-64 bg-teal-500/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10 max-w-3xl space-y-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-500 border border-brand-500/20">
+                        <span class="w-2 h-2 mr-2 rounded-full bg-brand-500 animate-pulse"></span>
+                        學術研究與報告發表必備武器
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                        用對 AI 與智慧工具，<br class="hidden sm:inline">讓你的大腦開啟高效開掛學習模式！
+                    </h2>
+                    <p class="text-sm sm:text-base text-gray-400 leading-relaxed">
+                        本系統深度整合了 PAPAYA 電腦教室精選的三十套現代化生產力課程。不論是期末簡報排版、單字記憶、論文程式開發，還是日常自動化工作流程，都能在此找到最適合你的數位軍火庫。
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-3">
+                        <button onclick="switchTab('resources')" class="px-5 py-2.5 bg-brand-500 hover:bg-brand-600 active:bg-brand-700 text-white font-medium rounded-xl shadow-lg hover:shadow-brand-500/20 transition-all flex items-center space-x-2 text-sm">
+                            <span>探索 35+ 數位資源</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                        <button onclick="switchTab('chat')" class="px-5 py-2.5 bg-darkCard hover:bg-white/5 active:bg-white/10 border border-darkBorder text-gray-300 hover:text-white font-medium rounded-xl transition-all text-sm flex items-center space-x-2">
+                            <span>直接與知識庫對話</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 四大主體方向指引 -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-darkCard hover:bg-darkCard/80 border border-darkBorder hover:border-brand-500/30 p-5 rounded-2xl transition-all group cursor-pointer" onclick="filterResources('ai-coding')">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-white text-base">本機 AI 與網頁開發</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">無痛上手 Gemma 4、LM Studio 及 Hugging Face，使用 Claude Code 實現 Vibe Coding 動嘴寫網頁與 Chrome 插件。</p>
+                </div>
+
+                <div class="bg-darkCard hover:bg-darkCard/80 border border-darkBorder hover:border-brand-500/30 p-5 rounded-2xl transition-all group cursor-pointer" onclick="filterResources('pkm')">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+                    </div>
+                    <h3 class="font-bold text-white text-base">知識管理與考試神器</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">利用 Notion 資料庫及 Anytype 的離線隱私保護建置個人外掛大腦，結合 Anki 間歇重複卡片完美應付各種大型考驗。</p>
+                </div>
+
+                <div class="bg-darkCard hover:bg-darkCard/80 border border-darkBorder hover:border-brand-500/30 p-5 rounded-2xl transition-all group cursor-pointer" onclick="filterResources('automation')">
+                    <div class="w-10 h-10 rounded-xl bg-green-500/10 text-green-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-white text-base">辦公流程與自動化</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">用 Make.com 及 n8n 將常用 Apps 與 AI 串連，自動整理作業、備份郵件、建構 Line 免費 24H 智能問答助理。</p>
+                </div>
+
+                <div class="bg-darkCard hover:bg-darkCard/80 border border-darkBorder hover:border-brand-500/30 p-5 rounded-2xl transition-all group cursor-pointer" onclick="filterResources('design')">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-white text-base">簡報排版與 3D 影音</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed">透過 Figma、Canva、Gamma 大師級簡報和 PPT 視差效果驚豔全場；結合 Suno/Kling 與 SketchUp 釋放極限創意。</p>
+                </div>
+            </div>
+
+            <!-- 核心互動版塊一：適配工具評估問卷 -->
+            <div class="bg-darkCard border border-darkBorder rounded-2xl p-6 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="space-y-2 max-w-2xl">
+                        <h3 class="text-xl font-bold text-white flex items-center">
+                            <span class="p-1 bg-brand-500/20 text-brand-500 rounded-lg mr-2.5">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            </span>
+                            學術任務神隊友 - 工具智能挑選推薦器
+                        </h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            面對各種期末報告、單字記憶、程式撰寫或專案整理，感到選擇困難嗎？花 20 秒回答 3 個簡單問題，系統將即時為你推薦最適合你目前學習情境與硬體配備的神級工具！
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="openWizardModal()" class="w-full md:w-auto px-5 py-2.5 bg-brand-500 hover:bg-brand-600 font-semibold rounded-xl text-white text-xs tracking-wider transition-colors flex items-center justify-center space-x-2 shadow-lg">
+                            <span>開始智能評估</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 核心互動版塊二：Anki 記憶閃卡實戰與 Python 變數命名診斷 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Anki 記憶卡模擬 -->
+                <div class="bg-darkCard border border-darkBorder rounded-2xl p-6 flex flex-col justify-between h-[360px]">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-brand-500/10 text-brand-500 border border-brand-500/20">Anki 學習閃卡</span>
+                            <span class="text-xs text-gray-400">點擊卡片翻轉複習</span>
+                        </div>
+                        <button onclick="nextAnkiCard()" class="text-xs text-brand-500 hover:text-brand-400 font-medium flex items-center space-x-1">
+                            <span>下一張</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- 3D 翻轉卡片 -->
+                    <div class="flex-grow flex items-center justify-center">
+                        <div class="card-container w-full max-w-sm h-48 cursor-pointer" onclick="flipAnkiCard()">
+                            <div id="anki-card-inner" class="card-inner w-full h-full relative">
+                                <!-- 卡片正面 -->
+                                <div class="card-front bg-darkBg border-2 border-darkBorder hover:border-brand-500/50 rounded-2xl p-6 flex flex-col justify-between shadow-lg">
+                                    <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">正面提問 (Question)</div>
+                                    <div id="anki-front-text" class="text-lg font-bold text-white text-center py-4">
+                                        LoRA 是一種什麼樣的 AI 技術？它的優勢是什麼？
+                                    </div>
+                                    <div class="text-[10px] text-gray-500 text-center">點擊卡片以查看背面解析</div>
+                                </div>
+                                <!-- 卡片背面 -->
+                                <div class="card-back bg-brand-950/20 border-2 border-brand-500/50 rounded-2xl p-6 flex flex-col justify-between shadow-lg">
+                                    <div class="text-xs text-brand-400 font-semibold uppercase tracking-wider">背面解答 (Answer)</div>
+                                    <div id="anki-back-text" class="text-sm text-gray-200 py-2 leading-relaxed">
+                                        LoRA 是一種「微調模型」技術，可以讓 AI 生成特定風格（如卡通貼紙、特定面孔）。優點是檔案小、對電腦硬體效能需求大幅降低！
+                                    </div>
+                                    <div class="text-[10px] text-brand-400 text-center">熟記此卡片！點擊卡片可再次翻回正面</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Python 變數命名診斷 -->
+                <div class="bg-darkCard border border-darkBorder rounded-2xl p-6 flex flex-col justify-between h-[360px]">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-3">
+                            <span class="px-2.5 py-1 text-xs font-semibold rounded-md bg-purple-500/10 text-purple-400 border border-purple-500/20">Python 程式診斷</span>
+                            <span class="text-xs text-gray-400">基礎語法互動測試</span>
+                        </div>
+                        <h4 class="font-bold text-white text-base">Python 變數命名合法性檢查</h4>
+                        <p class="text-xs text-gray-400 mt-1 leading-relaxed">
+                            在 Python 變數入門中，命名的不當會直接引發編譯錯誤。請在下方輸入你想測試的變數名稱，我們將即時進行規則檢測。
+                        </p>
+                    </div>
+
+                    <div class="my-4 space-y-3">
+                        <div class="relative">
+                            <input type="text" id="python-var-input" oninput="checkPythonVariable(this.value)" placeholder="例如：user_age, 2nd_place, class..." class="w-full bg-darkBg border border-darkBorder rounded-xl px-4 py-2 text-sm text-gray-200 focus:outline-none focus:border-purple-500">
+                        </div>
+                        <div id="python-var-feedback" class="p-3 bg-darkBg rounded-xl border border-darkBorder flex items-start space-x-2 text-xs text-gray-400">
+                            <svg class="w-4 h-4 text-gray-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span id="python-feedback-text">請輸入變數名稱進行規則驗證</span>
+                        </div>
+                    </div>
+
+                    <div class="text-[10px] text-gray-500 leading-relaxed">
+                        * 規則提示：不能以數字開頭、不能包含空格、不能使用保留關鍵字（如 if, for, class 等）、區分大小寫。
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 精選資源庫 -->
+        <section id="section-resources" class="hidden space-y-6 animate-fade-in">
+            <!-- 資源庫頭部 -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white tracking-wide flex items-center">
+                        精選生產力與 AI 資源庫
+                    </h2>
+                    <p class="text-xs text-gray-400 mt-1">涵蓋各大名校推崇之頂級 AI 對話、知識建構與影音 3D 設計工具</p>
+                </div>
+                <!-- 分類篩選按鈕 -->
+                <div class="flex flex-wrap gap-1.5 no-scrollbar overflow-x-auto pb-1">
+                    <button onclick="filterResources('all')" class="category-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand-500 text-white transition-all" id="btn-cat-all">全部</button>
+                    <button onclick="filterResources('ai-coding')" class="category-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-darkCard text-gray-400 hover:text-white transition-all" id="btn-cat-ai-coding">AI 與程式開發</button>
+                    <button onclick="filterResources('pkm')" class="category-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-darkCard text-gray-400 hover:text-white transition-all" id="btn-cat-pkm">知識管理與筆記</button>
+                    <button onclick="filterResources('automation')" class="category-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-darkCard text-gray-400 hover:text-white transition-all" id="btn-cat-automation">流程自動化</button>
+                    <button onclick="filterResources('design')" class="category-btn px-3 py-1.5 rounded-xl text-xs font-semibold bg-darkCard text-gray-400 hover:text-white transition-all" id="btn-cat-design">排版、簡報與3D</button>
+                </div>
+            </div>
+
+            <!-- 資源網格列表 -->
+            <div id="resources-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 內容動態由 JavaScript 載入 -->
+            </div>
+        </section>
+
+        <!-- 3. 常見問答(FAQ) -->
+        <section id="section-faq" class="hidden space-y-6 animate-fade-in">
+            <div class="max-w-3xl mx-auto space-y-6">
+                <div class="text-center space-y-2">
+                    <h2 class="text-2xl font-black text-white tracking-wide">常見技術問答手冊 (FAQ)</h2>
+                    <p class="text-xs text-gray-400">解決你在論文排版、本地 AI 部署、自動化對接與影片渲染時遇到的千古痛點</p>
+                </div>
+
+                <!-- 搜尋過濾器 -->
+                <div class="relative">
+                    <input type="text" id="faq-search" oninput="handleFAQSearch(this.value)" placeholder="搜尋問答內容、錯誤碼或關鍵字..." class="w-full bg-darkCard border border-darkBorder rounded-2xl pl-11 pr-4 py-3 text-sm text-gray-200 focus:outline-none focus:border-brand-500">
+                    <span class="absolute left-4 top-3.5 text-gray-500">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </span>
+                </div>
+
+                <!-- FAQ 手風琴列表 -->
+                <div id="faq-list" class="space-y-4">
+                    <!-- 問答動態由 JavaScript 載入 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. NotebookLM 對話 -->
+        <section id="section-chat" class="hidden space-y-6 animate-fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[600px]">
+                <!-- 左側控制面板與建議問題 -->
+                <div class="bg-darkCard border border-darkBorder rounded-2xl p-5 flex flex-col justify-between space-y-4 lg:col-span-1">
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-bold text-white text-base">NotebookLM 專屬導師</h3>
+                            <p class="text-[11px] text-gray-400 mt-1">此對話已由 PAPAYA 課程知識庫進行預加載，能精確解答所有工具的細微設定、硬體要求及底層邏輯。</p>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">熱門推薦提問</span>
+                            <div class="flex flex-col gap-1.5">
+                                <button onclick="sendPresetQuestion('如何在本機免費安裝運行離線 AI 模型？')" class="text-left p-2.5 rounded-xl bg-darkBg hover:bg-white/5 text-xs text-gray-300 hover:text-white border border-darkBorder hover:border-brand-500/30 transition-all">
+                                    👉 本機運行離線 AI 教程
+                                </button>
+                                <button onclick="sendPresetQuestion('Notion 資料庫關聯和雙向關聯怎麼設定？')" class="text-left p-2.5 rounded-xl bg-darkBg hover:bg-white/5 text-xs text-gray-300 hover:text-white border border-darkBorder hover:border-brand-500/30 transition-all">
+                                    👉 Notion 關聯資料庫設定
+                                </button>
+                                <button onclick="sendPresetQuestion('如何一分鐘搞定 Word 多層次清單與樣式的千古難題？')" class="text-left p-2.5 rounded-xl bg-darkBg hover:bg-white/5 text-xs text-gray-300 hover:text-white border border-darkBorder hover:border-brand-500/30 transition-all">
+                                    👉 Word 階層與樣式排版
+                                </button>
+                                <button onclick="sendPresetQuestion('剪輯影片超卡！如何提高 Premiere Pro 的效能？')" class="text-left p-2.5 rounded-xl bg-darkBg hover:bg-white/5 text-xs text-gray-300 hover:text-white border border-darkBorder hover:border-brand-500/30 transition-all">
+                                    👉 Premiere Pro 效能提昇大招
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-darkBorder text-[10px] text-gray-500 leading-relaxed">
+                        * 對話模式直接介接外部 API。若遭遇線路壅塞，系統將自動啟動指數退避重試，全力守護您的回答。
+                    </div>
+                </div>
+
+                <!-- 右側對話面板 -->
+                <div class="bg-darkCard border border-darkBorder rounded-2xl flex flex-col lg:col-span-3 h-full overflow-hidden">
+                    <!-- 對話視窗頂部 -->
+                    <div class="px-5 py-4 border-b border-darkBorder bg-darkCard flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-3 h-3 rounded-full bg-brand-500 animate-pulse"></div>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">PAPAYA 知識庫 AI 助理</h4>
+                                <p class="text-[10px] text-brand-400">連線至 Gemini-2.5-Flash 模型 | 已載入 35+ 堂精華講義</p>
+                            </div>
+                        </div>
+                        <button onclick="clearChatHistory()" class="text-xs text-gray-500 hover:text-gray-300 transition-colors flex items-center space-x-1">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            <span>清空紀錄</span>
+                        </button>
+                    </div>
+
+                    <!-- 聊天訊息歷史 (捲動區) -->
+                    <div id="chat-messages" class="flex-grow p-5 overflow-y-auto space-y-4 bg-darkBg/30">
+                        <!-- AI 歡迎語 -->
+                        <div class="flex items-start space-x-3 max-w-[85%]">
+                            <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-500 flex items-center justify-center shrink-0 border border-brand-500/20">
+                                💡
+                            </div>
+                            <div class="p-3.5 bg-darkCard border border-darkBorder rounded-2xl text-xs sm:text-sm text-gray-200 leading-relaxed">
+                                哈囉！我是你的 **PAPAYA 智能數位學習助理**。我已經完全吸收了所有上傳的 NotebookLM 學習資料，包含：<br><br>
+                                🎯 <strong>本機 Gemma 4/Claude Code 生產力開發</strong><br>
+                                🎯 <strong>Notion / Anytype / Anki 知識架構策略</strong><br>
+                                🎯 <strong>n8n / Make.com / Line AI 客服自動化流程</strong><br>
+                                🎯 <strong>Figma / Gamma / PPT 簡報視覺藝術</strong> 等等。<br><br>
+                                有任何關於課程提到的軟體操作疑難雜症、公式撰寫或步驟，隨時問我吧！
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 訊息輸入欄 -->
+                    <div class="p-4 border-t border-darkBorder bg-darkCard">
+                        <form id="chat-form" onsubmit="handleChatSubmit(event)" class="flex items-center space-x-2">
+                            <input type="text" id="chat-input" placeholder="對著 AI 導師提出與 NotebookLM 相關的問題..." class="flex-grow bg-darkBg border border-darkBorder rounded-xl px-4 py-2.5 text-xs sm:text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-all" required autocomplete="off">
+                            <button type="submit" id="chat-send-btn" class="p-2.5 sm:px-4 sm:py-2.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl shadow-lg transition-colors flex items-center justify-center space-x-1 shrink-0">
+                                <span class="hidden sm:inline text-xs font-semibold">發送</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部資訊與提示 -->
+    <footer class="bg-darkCard border-t border-darkBorder py-6 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-2">
+            <p>© 2026 PAPAYA 智能數位學習院. 本專案專為學生提升個人效率、精進前沿 AI 工作流與知識架構而設計。</p>
+            <p class="text-[10px] text-gray-600">本系統與 NotebookLM 上傳資料維持 100% 同步 | 採用 3D 閃卡、Python 自檢等高響應式架構</p>
+        </div>
+    </footer>
+
+    <!-- 全局提示框 (Toast) -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 bg-darkCard border-l-4 border-brand-500 text-gray-200 px-5 py-3.5 rounded-xl shadow-2xl flex items-center space-x-3 transition-all duration-300">
+        <span class="text-xl">💡</span>
+        <div class="text-xs font-medium" id="toast-text">提示訊息載入中...</div>
+    </div>
+
+    <!-- 適配工具評估問卷 Modal -->
+    <div id="wizard-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-fade-in">
+        <div class="bg-darkCard border border-darkBorder rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col">
+            <!-- Modal Header -->
+            <div class="px-5 py-4 border-b border-darkBorder bg-darkCard/50 flex justify-between items-center">
+                <h4 class="font-bold text-white text-sm">適配工具智能評估</h4>
+                <button onclick="closeWizardModal()" class="text-gray-400 hover:text-white transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            
+            <!-- Modal Body (問卷步驟) -->
+            <div class="p-6 flex-grow space-y-6">
+                <!-- 步驟指示 -->
+                <div class="flex justify-between items-center text-xs text-gray-500">
+                    <span id="wizard-step-indicator">步驟 1 / 3</span>
+                    <span class="w-24 h-1 bg-darkBg rounded-full overflow-hidden">
+                        <span id="wizard-step-bar" class="block h-full bg-brand-500 transition-all duration-300" style="width: 33%"></span>
+                    </span>
+                </div>
+
+                <!-- 步驟 1 -->
+                <div id="wizard-step-1" class="space-y-4">
+                    <h5 class="font-bold text-white text-sm">問題 1：你目前正面臨什麼樣的核心學術任務？</h5>
+                    <div class="grid grid-cols-1 gap-2.5">
+                        <button onclick="selectWizardAnswer(1, 'A')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 A. AI 對話、軟體開發、動手做 Chrome 擴充功能等「Vibe Coding」
+                        </button>
+                        <button onclick="selectWizardAnswer(1, 'B')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 B. 單字記憶、高效複習大考、整合零碎學習資訊
+                        </button>
+                        <button onclick="selectWizardAnswer(1, 'C')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 C. 多合一期末專案管理、流程自動化與高效率辦公排版
+                        </button>
+                        <button onclick="selectWizardAnswer(1, 'D')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 D. 簡報設計、影片特效剪輯、AI 影片動畫生成
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 步驟 2 -->
+                <div id="wizard-step-2" class="hidden space-y-4">
+                    <h5 class="font-bold text-white text-sm">問題 2：你願意投入多少心力在「寫程式碼、寫公式或繁瑣設定」上？</h5>
+                    <div class="grid grid-cols-1 gap-2.5">
+                        <button onclick="selectWizardAnswer(2, 'A')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 A. 完全不想碰程式碼，喜歡全自動一鍵生成的 AI 工具
+                        </button>
+                        <button onclick="selectWizardAnswer(2, 'B')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 B. 願意學習基礎的公式邏輯、表格關聯或連線設定（如 Notion / Markdown）
+                        </button>
+                        <button onclick="selectWizardAnswer(2, 'C')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 C. 渴望深入動手寫 Python、Excel VBA 或利用 Git 在終端機跑 AI 開發
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 步驟 3 -->
+                <div id="wizard-step-3" class="hidden space-y-4">
+                    <h5 class="font-bold text-white text-sm">問題 3：你最常使用或首選的學習設備是哪一種？</h5>
+                    <div class="grid grid-cols-1 gap-2.5">
+                        <button onclick="selectWizardAnswer(3, 'A')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 A. 一般的 Windows 系統筆電
+                        </button>
+                        <button onclick="selectWizardAnswer(3, 'B')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 B. macOS 系統電腦
+                        </button>
+                        <button onclick="selectWizardAnswer(3, 'C')" class="w-full text-left p-3 rounded-xl bg-darkBg border border-darkBorder hover:border-brand-500/50 text-xs text-gray-300 hover:text-white transition-all">
+                            📌 C. 平板電腦 / 手機或喜歡完全跨平台同步
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 評估結果展示 -->
+                <div id="wizard-result" class="hidden space-y-4">
+                    <div class="p-4 bg-brand-500/10 border border-brand-500/30 rounded-xl space-y-3">
+                        <div class="flex items-center space-x-2 text-brand-500">
+                            <span class="text-xl">🏆</span>
+                            <span class="font-extrabold text-sm uppercase tracking-wide">您的首選適配推薦工具</span>
+                        </div>
+                        <h6 id="wizard-result-title" class="font-black text-white text-lg">推薦工具名稱載入中...</h6>
+                        <p id="wizard-result-desc" class="text-xs text-gray-300 leading-relaxed">工具的精準分析與學習路徑指引將會呈現在這裡。</p>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="restartWizard()" class="flex-1 py-2 bg-darkBg hover:bg-white/5 text-gray-400 hover:text-white border border-darkBorder text-xs font-semibold rounded-xl transition-all">
+                            重新評估
+                        </button>
+                        <button onclick="viewRecommendedResource()" class="flex-1 py-2 bg-brand-500 hover:bg-brand-600 text-white text-xs font-semibold rounded-xl transition-all">
+                            查看詳細攻略
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== JavaScript 核心邏輯 ==================== -->
+    <script>
+        // --- 資源庫資料結構 (精煉自 30+ 篇 PAPAYA 課程轉錄文字) ---
+        const resourcesData = [
+            {
+                id: "gemma-lmstudio",
+                title: "Gemma 4 & LM Studio",
+                subtitle: "本地離線 AI 超級工作站",
+                category: "ai-coding",
+                tags: ["本地 AI", "隱私防護", "免費硬體"],
+                desc: "將一般家用筆電和手機打造成完全免費、離線可運作的極致安全 AI 環境。支援多種參數規模，免除訂閱費，資料絕對防洩密。",
+                studentUse: "適用於撰寫需要完全隱私的專案研究、極密程式開發，或是無網路、山上露營時的離線論文輔助。",
+                courseTip: "LM Studio 內建圖形操作介面，對初學者極度友善。可下載規格如 E2B (適用手機/平板) 或 26B/31B (適用高階 GPU 電腦)，並調高上下文額度配合 VS Code + Continue 做本機 AI 開發。"
+            },
+            {
+                id: "notion-pkm",
+                title: "Notion 智慧知識庫",
+                subtitle: "高效學科大腦 & 進度追蹤",
+                category: "pkm",
+                tags: ["筆記管理", "資料庫", "IFS公式"],
+                desc: "掌握 Notion 資料庫的底層邏輯，串接表格、關聯（Relation）與公式（Formula）屬性，建置能一目了然看清進度的「看板學科管家」。",
+                studentUse: "追蹤考研/期末各科目學習進度、列出例行性英文單字複習任務（使用 Repeat 循環範本），甚至自製預算支出表。",
+                courseTip: "利用去年推出的 Button 按鈕功能一鍵新增任務，並運用 `IFS` 函數判斷：若『完成率等於 1』顯示『已完成』；若『完成率等於 0』顯示『未開始』；其餘顯示『進行中』，以此動態追蹤專案狀態。"
+            },
+            {
+                id: "anki-srs",
+                title: "Anki 記憶考試神器",
+                subtitle: "基於間歇重複的學霸最愛",
+                category: "pkm",
+                tags: ["單字記憶", "字卡背誦", "CSV匯入"],
+                desc: "考前複習與學英文的終極字卡武器。配合 Spaced Repetition (間歇重複) 演算法，科學化篩選需要加強背誦的卡片。",
+                studentUse: "準備英檢、多益、歷史地理重要年份與醫學法律各學科名詞，保證複習效率翻倍。",
+                courseTip: "支援 Windows/Mac 免費。在建立牌組時，利用雙冒號（如 `英文::單字`）自動產生子牌組。可安裝 AwesomeTTS 語音擴充元件自動為背誦卡朗讀，還能在 Excel 整理好卡片儲存成 CSV，一鍵批次匯入 Anki。"
+            },
+            {
+                id: "claude-code-design",
+                title: "Claude Design & Code",
+                subtitle: "Vibe Coding 網頁開發大師",
+                category: "ai-coding",
+                tags: ["網頁開發", "前端設計", "Claude Code"],
+                desc: "Anthropic 推出的神級開發組件。Claude Design 助你以對話式設計出驚豔的簡報與網頁 UI 原型；Claude Code 則在終端機一聲令下即可開發上線完整 App。",
+                studentUse: "學生可用它在幾分鐘內寫出超炫的個人線上簡歷、期末網頁成果發表，甚至寫出 Chrome 瀏覽器擴充功能來輔助日常讀書。",
+                courseTip: "在 Windows 中安裝前記得先安裝 Git (Mac 則執行 xcode-select --install) 來做版本控制。透過 Terminal 快速安裝 Claude Code 後，即可直接輸入需求並核准計畫，Claude 就會幫你實作、抓出 bug 並一鍵上線！"
+            },
+            {
+                id: "make-n8n-auto",
+                title: "Make.com & n8n 自動化",
+                subtitle: "告別手動搬運的無程式流程引擎",
+                category: "automation",
+                tags: ["自動化", "模組串接", "n8n自架"],
+                desc: "連接並整合你常用的 Gmail、雲端硬碟、Notion 與 Line，以「路由器、合併、聚合」等多樣化節點建立全天候運作的超強辦公流。",
+                studentUse: "自動追蹤特定 RSS 學術新聞並由 ChatGPT 自動翻譯成中文；或監控 Gmail 郵件，收到教授或小組報告郵件時自動將附件備份至雲端硬碟並記錄至 Google Sheet。",
+                courseTip: "Make.com 對新手最友善；n8n 則具備更高的自定義與端到端加密隱私防護。在 n8n 串接多個分支時，利用 Merge 節點進行資料匯整，再配合 Aggregate 節點整合成一則訊息，避免寄出海量通知郵件。"
+            },
+            {
+                id: "anytype-private",
+                title: "Anytype 去中心化筆記",
+                subtitle: "兼具隱私保護與支援離線的類Notion",
+                category: "pkm",
+                tags: ["離線筆記", "本地加密", "Anytype"],
+                desc: "保護隱私至上的學生首選。採用去中心化的端到端加密技術，支援完全本地儲存與離線讀寫。擺脫網路依賴與訂閱優化限制。",
+                studentUse: "適合撰寫高敏感度的私人筆記、日記，以及在學校封閉式考場或飛機等無網環境下讀取的核心學術資料庫。",
+                courseTip: "不需註冊帳密，而是產生一組唯一的單字作為「恢復短語」來解密。掌握『集合 (Sets，同一種物件類型的自動化動態視圖)』與『集錦 (Collections，類似電腦資料夾的手動連結歸類)』的差別，建構完美的知識樹圖譜。"
+            },
+            {
+                id: "gamma-ai-presentation",
+                title: "Gamma AI 簡報神器",
+                subtitle: "簡報界的跨世紀智能排版",
+                category: "design",
+                tags: ["簡報製作", "AI 生成", "Gamma"],
+                desc: "徹底淘汰 PowerPoint 石器時代排版。只需輸入大綱與主旨，AI 便會在極速內產生完美流暢、具備強大視覺衝擊力的大師級簡報、文件或網頁。",
+                studentUse: "期末課堂發表、論文大綱審查、社團宣傳、快速生成互動式的圖說卡片簡報，還能無網匯出 PDF / PPT。",
+                courseTip: "利用 Gamma 的「對話式 AI 修改功能」，選取區塊並直接跟 AI 說「加強對比、換成三欄、調整為科技氛圍色系」即可即時調整，不用再辛苦拉邊框和對齊。"
+            },
+            {
+                id: "huggingface-sandbox",
+                title: "Hugging Face 模型軍火庫",
+                subtitle: "全球頂級 AI 開源總部",
+                category: "ai-coding",
+                tags: ["開源模型", "萬物生成", "API對接"],
+                desc: "AI 界的 App Store。收錄超 250 萬個頂級開源模型，支援直接在瀏覽器免費體驗，亦能取得金鑰進行本地/雲端運算部署。",
+                studentUse: "對人工智慧與機器學習感興趣的學生，可用來研究最新的語音辨識、圖像分割與文字生成，並在 Python 程式中直接載入運行。",
+                courseTip: "如果個人硬體效能不足，可改用雲端伺服器的 Inference Providers。在 Hugging Face 註冊帳號並取得 Token 金鑰，利用 python `pip install huggingface_hub` 庫便能運行如 Wan 2.2 影片生成模型並二進位寫入儲存為 MP4。"
+            },
+            {
+                id: "comfyui-lora-upscale",
+                title: "ComfyUI 畫質提升與 LoRA",
+                subtitle: "AI 繪圖的極限節點沙盒",
+                category: "design",
+                tags: ["ComfyUI", "LoRA微調", "RealESRGAN"],
+                desc: "引領圖像生成的高難度節點系統。藉由加載輕量、優質的 LoRA 藝術風格模型與深度 AI 放大器，打造出令人驚嘆的畫質作品。",
+                studentUse: "設計個人漫畫貼圖、社團刊物高清插圖、修復並放大低畫質的歷史研究配圖。",
+                courseTip: "SDXL 等 Checkpoint 基礎模型功能完整但檔案大。 LoRA 微調模型（如 Stickers Redmond）必須搭配基礎模型使用，其檔案極小。放大影像時推薦使用 RealESRGAN 模型並在 ComfyUI 內加載 Upscale Model Loader 節點，可達到真正增添細節的 2x/4x 真高清放大。"
+            },
+            {
+                id: "premiere-pro-proxy",
+                title: "Premiere Pro 效能爆發",
+                subtitle: "告別電腦慢到懷疑人生的十個技巧",
+                category: "design",
+                tags: ["剪輯提速", "Proxy代理", "快取清理"],
+                desc: "為低配筆電或高解析度剪輯度身定做的剪輯加速技巧。完整教學如何清理快取、優化 Mercury Transmit 及創設 ProRes / Cineform 代理檔。",
+                studentUse: "學生期末影片報告、社團微電影、YouTube 與 TikTok 影音創作，大幅優化預覽卡頓，剪輯流暢順手。",
+                courseTip: "「代理檔（Proxy）」是最具爆發力的提效核心。影片按右鍵選擇「創建代理」，Mac 選 ProRes 格式，Windows 選 GoPro Cineform，並將「切換代理」按鈕拉到工具列。導出時完全不用擔心影響最終成片的高解析度。"
+            },
+            {
+                id: "ppt-morph-parallax",
+                title: "PowerPoint 視差立體動畫",
+                subtitle: "上帝視角與電影級轉場",
+                category: "design",
+                tags: ["PowerPoint", "轉化轉場", "3D立體"],
+                desc: "在普通簡報中玩出網頁流行的電影級「視差動畫效果」。利用將文字、前景、中景、遠景背景設置不同移動速度，帶來身歷其境的立體感。",
+                studentUse: "讓你的期末專題報告簡報排版精美度直接秒殺台下所有同儕，贏得高分推薦。",
+                courseTip: "將第一張投影片中的所有元素複製到第二張，並往上平移超出邊界，再將背景圖往反方向平移大約一半距離，最後套用「轉場 -> 轉化 (Morph)」。結合 3D 模型與上帝視角切換，視覺對比震撼！"
+            },
+            {
+                id: "excel-vba-inventory",
+                title: "Excel 庫存管理與 VBA 基礎",
+                subtitle: "免裝資料庫的高質感系統",
+                category: "automation",
+                tags: ["Excel", "VBA巨集", "進階篩選"],
+                desc: "掌握 Excel 儲存格嵌入圖片、巨集與 VBA。當存貨低於安全庫存時，自動跳出驚嘆號警告，並配合 COUNTA 公式實踐全自動歸檔。",
+                studentUse: "適用於學生社團物資與設備借用管理、研究實驗室耗材庫存登記、個人訂單小生意的管理表格。",
+                courseTip: "用 `COUNTA` 自動取得已有資料的最後一行，透過 VBA 把表單數據寫入。另外使用 `Address` 配合 `Target` 檢測滑鼠點擊「入庫」或「出庫」按鈕，並運用進階篩選巨集進行精準的多欄篩選。"
+            }
+        ];
+
+        // --- FAQ 常見問答資料集 ---
+        const faqData = [
+            {
+                q: "1. 學生想在個人筆電本地運行離線 AI 模型，LM Studio 選哪個版本最不會卡？",
+                a: "這完全取決於你的顯示卡 VRAM 記憶體大小。Google Gemma 4 系列：(1) 如果你是手機、平板或極低階文書機，請選 <strong>E2B</strong>；(2) 如果是一般性能筆電、無獨立顯卡，推薦 <strong>E4B</strong>；(3) 若有電競級獨立顯卡（VRAM 大於 8GB），建議下載 <strong>26B 或 31B</strong> 推理能力最強的版本。下載後可配合 VS Code 並安裝 <em>Continue</em> 免費擴充功能來做本機連線寫程式。"
+            },
+            {
+                q: "2. Notion 與 Anytype 都是筆記與資料庫管理，這兩者有什麼本質區別？我該怎麼選？",
+                a: "這兩者的定位不同：<br>(1) <strong>Notion</strong> 是標準的雲端工具，具備超強的公式功能（如 IFS 計算完成率自動更新專案狀態）、Repeat 每日循環範本、關聯式資料庫及多人實時協作，適合重視生態與團隊合作的學生。<br>(2) <strong>Anytype</strong> 是去中心化、本地儲存端到端加密的。它不需要網際網路，完全不擔心帳密洩漏（使用金鑰單字恢復），且完全離線使用，它的數據架構是「Sets（集合）」與「Collections（集錦）」，適合極度重視隱私、有大量離線讀寫需求的同學。"
+            },
+            {
+                q: "3. 影片剪輯時電腦卡到不行，有哪些簡單又不用花錢的優化設定？",
+                a: "在 Premiere Pro 中，請依序使用這 5 個免硬體優化大招：<br>1. <strong>創建代理檔 (Proxies)</strong>：最核心！在影片點右鍵選 Create Proxies，Mac 選擇 <em>ProRes</em>，Windows 選擇 <em>Cineform</em>。剪輯時開啟工具列的「切換代理」即可用低解析度流暢剪輯，導出會自動恢復高清。<br>2. <strong>偏好設定 -> Playback</strong>：將 Mercury Transmit（多螢幕顯示）關閉。<br>3. <strong>偏好設定 -> Memory</strong>：盡量將更多的記憶體分配給 Premiere Pro。<br>4. <strong>清快取</strong>：定期清理 Media Cache 暫存檔。<br>5. <strong>關特效</strong>：點選節目監視器右下角的「+」，將「特效總開關 (Mute FX)」拖曳到工具列，一鍵關閉所有調色和特效預覽以加速畫面效能。"
+            },
+            {
+                q: "4. Word 排版的多層次清單每次重新整理縮排都會跑掉，到底要怎麼解？",
+                a: "解決清單跑版的核心概念是<strong>「文字內容與格式徹底分離」</strong>，這必須完全透過『樣式（Styles）』來控制。在 Word 裡，選取文字後：<br>1. 到上方點選「多層次清單」 -> <strong>「定義新的多層次清單」</strong>。<br>2. 分別點選階層一、階層二，並在最右側「將階層連結到樣式」中，將階層一綁定到『標題 1』，階層二綁定到『標題 2』，以此類推。這樣設定好後，你只要修改樣式本身的外觀與縮排，清單便會跟著一鍵自動更新，絕不跑版！"
+            },
+            {
+                q: "5. 在 Excel 製作社團物資或耗材庫存表，要如何用 VBA 做到安全存量不足時自動提醒？",
+                a: "你可以在 VBA 工作表模組中寫一個 <code>If</code> 條件句進行邏輯判斷。當商品庫存的儲存格數值低於安全庫存量時，呼叫 <code>MsgBox</code> 函數。VBA 範例語法：<br><code>If Cells(i, 7).Value < Cells(i, 8).Value Then MsgBox \"該商品庫存嚴重不足，請即時補貨！\", vbExclamation, \"安全庫存警戒提示\"</code>。在執行時還會自動用條件化格式或儲存格顏色將該商品標注出來，大幅減少漏看、漏補貨的窘境。"
+            },
+            {
+                q: "6. PowerPoint 裡「轉化（Morph）轉場」要如何呈現出具有立體感的「視差效果」？",
+                a: "視差效果是基於「前景和背景以不同速度移動」的物理原理。實作步驟如下：<br>1. 在第一張投影片放入背景（例如藍天）與前景（文字/摺紙圖片）。<br>2. 複製此投影片為第二張。<br>3. 在第二張投影片中，把所有的前景文字與圖片往<strong>上方</strong>拖曳平移至邊界外（或放大縮小）；同時，把背後的背景圖片朝<strong>反方向（下方）</strong>平移一小段距離（不要拖出邊框）。<br>4. 在第二張投影片套用<strong>「轉化 (Morph)」</strong>轉場。播放時，觀眾便會驚喜發現文字與背景以截然不同的移速滑入，營造出絕美的電影級 3D 視差效果！"
+            }
+        ];
+
+        // --- Anki 學習卡片庫 (配合互動閃卡) ---
+        const ankiCardData = [
+            {
+                q: "LoRA 是一種什麼樣的 AI 技術？它的優勢是什麼？",
+                a: "LoRA 是一種「微調模型」技術（Low-Rank Adaptation），它不修改 AI 基礎 Checkpoint 本身，而是加載一個輕量的微調層來產生特定風格（如 cartoon Redmond 卡通貼圖、Flux 數位人臉肖像）。它的優勢在於檔案極小、對硬體資源需求極低！"
+            },
+            {
+                q: "Claude Design、Claude Cowork 與 Claude Code 有何不同？各自適合什麼學生任務？",
+                a: "• <strong>Claude Design</strong>：用對話來做 UI 與簡報設計、動態原型，適合做期末提案報告。<br>• <strong>Claude Cowork</strong>：在指定資料夾（工作區）安全處理大量文件、作業與照片分類、寫回信草稿。<br>• <strong>Claude Code</strong>：終端機 AI 開發助手（Vibe Coding），可以動動嘴就幫你寫出 Chrome 插件、修好程式 API 漏洞。"
+            },
+            {
+                q: "在 Power BI 中匯入 Excel 表格作為互動圖表，前置格式檢查有什麼核心三大鐵律？",
+                a: "鐵律一：表格四周絕對不能有任何的<strong>合併欄位</strong>。<br>鐵律二：表格中不得包含任何手動的<strong>數值小計、日期群組</strong>（例如門市小計或每月份小計，Power BI 會自己聚合計算）。<br>鐵律三：必須將 Excel 資料格式化為名為「產品」或「業績」的<strong>標準表格 (Ctrl+T)</strong>，以利 Power BI 自動同步最新進度。"
+            },
+            {
+                q: " n8n 自動化流程中，Merge 節點、Aggregate 節點有何關鍵妙用？",
+                a: "當工作流有兩條或以上的路徑時，可用 <strong>Merge (合併)</strong> 節點把不同的 Input 資料接口整合在一起。接著將其與 <strong>Aggregate</strong> 節點連接，將多筆分散的資料整合成「一則訊息」，這樣可以避免流程對你的 Line 或 Gmail 重複發送海量通知信件，做到完全精準自動化！"
+            }
+        ];
+
+        let currentAnkiIndex = 0;
+        let activeTab = 'dashboard';
+        let wizardCurrentStep = 1;
+        let wizardAnswers = {};
+
+        // --- 核心初始化 ---
+        window.onload = function() {
+            // 載入資源庫與 FAQ
+            renderResources('all');
+            renderFAQ(faqData);
+            
+            // 監聽鍵盤與滾動 (此處無需處理 Canvas 以外的互動)
+            showToast("PAPAYA 數位學習平台已成功載入！");
+        };
+
+        // --- Tab 切換功能 ---
+        function switchTab(tabId) {
+            activeTab = tabId;
+            // 隱藏所有 section
+            document.querySelectorAll('main > section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            // 顯示指定 section
+            const targetSection = document.getElementById(`section-${tabId}`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            // 更新導覽按鈕狀態
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('text-brand-500', 'bg-brand-500/10');
+                btn.classList.add('text-gray-400', 'hover:text-white', 'hover:bg-white/5');
+            });
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-400', 'hover:text-white', 'hover:bg-white/5');
+                activeBtn.classList.add('text-brand-500', 'bg-brand-500/10');
+            }
+        }
+
+        // --- 手機版選單切換 ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- Toast 提示功能 ---
+        function showToast(text, duration = 3000) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            toastText.innerHTML = text;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, duration);
+        }
+
+        // --- 渲染資源庫網格 ---
+        function renderResources(categoryFilter, searchQuery = '') {
+            const grid = document.getElementById('resources-grid');
+            grid.innerHTML = '';
+
+            let filtered = resourcesData;
+            if (categoryFilter !== 'all') {
+                filtered = filtered.filter(item => item.category === categoryFilter);
+            }
+
+            if (searchQuery.trim() !== '') {
+                const query = searchQuery.toLowerCase();
+                filtered = filtered.filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    item.subtitle.toLowerCase().includes(query) ||
+                    item.desc.toLowerCase().includes(query) ||
+                    item.tags.some(t => t.toLowerCase().includes(query))
+                );
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-gray-500 space-y-2">
+                        <span class="text-3xl">🔍</span>
+                        <p class="text-sm">查無符合此條件的工具資源</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-darkCard border border-darkBorder hover:border-brand-500/30 rounded-2xl p-5 flex flex-col justify-between hover:shadow-xl transition-all group duration-300";
+                
+                // 生成標籤
+                let tagHtml = '';
+                item.tags.forEach(t => {
+                    tagHtml += `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-darkBg border border-darkBorder text-gray-400">${t}</span>`;
+                });
+
+                card.innerHTML = `
+                    <div class="space-y-3">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <h3 class="font-bold text-white text-base group-hover:text-brand-500 transition-colors">${item.title}</h3>
+                                <p class="text-[11px] text-brand-400 font-medium">${item.subtitle}</p>
+                            </div>
+                            <span class="text-lg opacity-80 group-hover:scale-125 transition-transform">💡</span>
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-1.5">${tagHtml}</div>
+                        
+                        <p class="text-xs text-gray-400 leading-relaxed">${item.desc}</p>
+                        
+                        <div class="p-3 bg-darkBg rounded-xl border border-darkBorder space-y-1">
+                            <span class="text-[10px] font-extrabold text-brand-500 uppercase tracking-wide">👨‍🎓 學生核心用途：</span>
+                            <p class="text-[11px] text-gray-300 leading-relaxed">${item.studentUse}</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-darkBorder flex items-center justify-between text-[11px] text-gray-500">
+                        <span class="truncate">提示：${item.courseTip.substring(0, 18)}...</span>
+                        <button onclick="openResourceDetail('${item.id}')" class="text-brand-500 hover:text-brand-400 font-semibold shrink-0">詳細攻略 &rarr;</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- 分類篩選邏輯 ---
+        function filterResources(category) {
+            // 更新篩選按鈕高亮
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-500', 'text-white');
+                btn.classList.add('bg-darkCard', 'text-gray-400', 'hover:text-white');
+            });
+            const activeBtn = document.getElementById(`btn-cat-${category}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-darkCard', 'text-gray-400', 'hover:text-white');
+                activeBtn.classList.add('bg-brand-500', 'text-white');
+            }
+
+            // 切換視圖至資源庫並執行渲染
+            switchTab('resources');
+            renderResources(category);
+        }
+
+        // --- 渲染 FAQ 列表 ---
+        function renderFAQ(dataList) {
+            const listContainer = document.getElementById('faq-list');
+            listContainer.innerHTML = '';
+
+            if (dataList.length === 0) {
+                listContainer.innerHTML = `
+                    <div class="py-12 text-center text-gray-500 space-y-2">
+                        <span class="text-3xl">🔍</span>
+                        <p class="text-sm">查無符合關鍵字的 FAQ 問答</p>
+                    </div>
+                `;
+                return;
+            }
+
+            dataList.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = "bg-darkCard border border-darkBorder rounded-2xl overflow-hidden transition-all duration-300";
+                itemDiv.innerHTML = `
+                    <button onclick="toggleFAQ(${index})" class="w-full px-5 py-4 text-left flex justify-between items-center hover:bg-white/5 transition-colors focus:outline-none">
+                        <span class="font-bold text-xs sm:text-sm text-white pr-4 leading-relaxed">${item.q}</span>
+                        <span id="faq-icon-${index}" class="text-gray-500 transform transition-transform duration-300 shrink-0">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </span>
+                    </button>
+                    <div id="faq-ans-${index}" class="hidden px-5 pb-5 border-t border-darkBorder/50 bg-darkBg/20 text-xs sm:text-sm text-gray-300 leading-relaxed pt-3">
+                        ${item.a}
+                    </div>
+                `;
+                listContainer.appendChild(itemDiv);
+            });
+        }
+
+        // --- 手風琴切換 ---
+        function toggleFAQ(index) {
+            const ansDiv = document.getElementById(`faq-ans-${index}`);
+            const iconSpan = document.getElementById(`faq-icon-${index}`);
+            
+            const isHidden = ansDiv.classList.contains('hidden');
+            
+            if (isHidden) {
+                ansDiv.classList.remove('hidden');
+                iconSpan.classList.add('rotate-180');
+            } else {
+                ansDiv.classList.add('hidden');
+                iconSpan.classList.remove('rotate-180');
+            }
+        }
+
+        // --- 資源庫 & FAQ 獨立搜尋與全域搜尋 ---
+        function handleGlobalSearch(val) {
+            // 同步輸入框
+            document.getElementById('global-search').value = val;
+            document.getElementById('mobile-global-search').value = val;
+
+            // 觸發資源庫與 FAQ 的同時篩選
+            renderResources('all', val);
+            
+            // 篩選 FAQ
+            const query = val.toLowerCase();
+            const filteredFAQ = faqData.filter(item => 
+                item.q.toLowerCase().includes(query) || 
+                item.a.toLowerCase().includes(query)
+            );
+            renderFAQ(filteredFAQ);
+
+            // 自動切換合適的 Tab (如果不在對話頁)
+            if (activeTab !== 'chat') {
+                if (activeTab === 'dashboard') {
+                    switchTab('resources');
+                }
+            }
+        }
+
+        function handleFAQSearch(val) {
+            const query = val.toLowerCase();
+            const filtered = faqData.filter(item => 
+                item.q.toLowerCase().includes(query) || 
+                item.a.toLowerCase().includes(query)
+            );
+            renderFAQ(filtered);
+        }
+
+        // --- 資源庫詳細攻略 Modal 模擬 ---
+        function openResourceDetail(id) {
+            const item = resourcesData.find(r => r.id === id);
+            if (!item) return;
+
+            // 用 beautiful toast 展示核心攻略提示，亦可在此呼叫 AI 導師
+            showToast(`已加載《${item.title}》詳細攻略！您可以切換至「NotebookLM對話」直接提問。`, 4000);
+            
+            // 自動加載對話 Preset 供學生直接與 AI 對談此工具
+            switchTab('chat');
+            sendPresetQuestion(`請詳細分析《${item.title} ${item.subtitle}》在學生學術研究或日常管理上的最大痛點解決方案與具體步驟。`);
+        }
+
+        // --- Anki 記憶卡翻轉與切換 ---
+        function flipAnkiCard() {
+            const cardInner = document.getElementById('anki-card-inner');
+            cardInner.classList.toggle('card-flipped');
+        }
+
+        function nextAnkiCard() {
+            // 先恢復至正面
+            const cardInner = document.getElementById('anki-card-inner');
+            cardInner.classList.remove('card-flipped');
+
+            setTimeout(() => {
+                currentAnkiIndex = (currentAnkiIndex + 1) % ankiCardData.length;
+                document.getElementById('anki-front-text').innerHTML = ankiCardData[currentAnkiIndex].q;
+                document.getElementById('anki-back-text').innerHTML = ankiCardData[currentAnkiIndex].a;
+                showToast("已載入下一張 Anki 複習卡片！");
+            }, 300);
+        }
+
+        // --- Python 變數命名合法性檢查器 (入門 #02 核心點) ---
+        function checkPythonVariable(val) {
+            const feedback = document.getElementById('python-var-feedback');
+            const textSpan = document.getElementById('python-feedback-text');
+
+            if (!val || val.trim() === '') {
+                feedback.className = "p-3 bg-darkBg rounded-xl border border-darkBorder flex items-start space-x-2 text-xs text-gray-400";
+                textSpan.innerHTML = "請輸入變數名稱進行規則驗證";
+                return;
+            }
+
+            // Python 保留字
+            const keywords = ['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await', 'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return', 'try', 'while', 'with', 'yield'];
+
+            const trimmed = val.trim();
+
+            // 1. 檢查是否為保留字
+            if (keywords.includes(trimmed)) {
+                feedback.className = "p-3 bg-red-500/10 rounded-xl border border-red-500/30 flex items-start space-x-2 text-xs text-red-400";
+                textSpan.innerHTML = `⚠️ 錯誤！"<strong>${trimmed}</strong>" 是 Python 的系統保留字 (Keywords)，無法做為變數命名。`;
+                return;
+            }
+
+            // 2. 檢查首字元是否為數字
+            if (/^[0-9]/.test(trimmed)) {
+                feedback.className = "p-3 bg-red-500/10 rounded-xl border border-red-500/30 flex items-start space-x-2 text-xs text-red-400";
+                textSpan.innerHTML = `⚠️ 錯誤！Python 變數<strong>不能以數字開頭</strong>。請修改字首。`;
+                return;
+            }
+
+            // 3. 檢查空格或特殊字元
+            if (/\s/.test(trimmed)) {
+                feedback.className = "p-3 bg-red-500/10 rounded-xl border border-red-500/30 flex items-start space-x-2 text-xs text-red-400";
+                textSpan.innerHTML = `⚠️ 錯誤！變數名稱<strong>不能包含空格</strong>。推薦使用底線 "<strong>_</strong>" 代替空格。`;
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9_]+$/.test(trimmed)) {
+                feedback.className = "p-3 bg-red-500/10 rounded-xl border border-red-500/30 flex items-start space-x-2 text-xs text-red-400";
+                textSpan.innerHTML = `⚠️ 錯誤！名稱只能包含英文字母、數字以及底線，<strong>不能含有符號或中文字元</strong>。`;
+                return;
+            }
+
+            // 完全合法
+            feedback.className = "p-3 bg-green-500/10 rounded-xl border border-green-500/30 flex items-start space-x-2 text-xs text-green-400";
+            textSpan.innerHTML = `🎉 恭喜！"<strong>${trimmed}</strong>" 是完全合法的 Python 變數。可完美編譯運行！`;
+        }
+
+        // --- 核心互動三：適配評估問卷 Modal 邏輯 ---
+        function openWizardModal() {
+            restartWizard();
+            document.getElementById('wizard-modal').classList.remove('hidden');
+        }
+
+        function closeWizardModal() {
+            document.getElementById('wizard-modal').classList.add('hidden');
+        }
+
+        function restartWizard() {
+            wizardCurrentStep = 1;
+            wizardAnswers = {};
+            
+            document.getElementById('wizard-step-1').classList.remove('hidden');
+            document.getElementById('wizard-step-2').classList.add('hidden');
+            document.getElementById('wizard-step-3').classList.add('hidden');
+            document.getElementById('wizard-result').classList.add('hidden');
+            
+            updateWizardUI();
+        }
+
+        function updateWizardUI() {
+            const indicator = document.getElementById('wizard-step-indicator');
+            const progress = document.getElementById('wizard-step-bar');
+            
+            if (wizardCurrentStep <= 3) {
+                indicator.innerHTML = `步驟 ${wizardCurrentStep} / 3`;
+                progress.style.width = `${(wizardCurrentStep / 3) * 100}%`;
+            } else {
+                indicator.innerHTML = `適配評估完成！`;
+                progress.style.width = `100%`;
+            }
+        }
+
+        function selectWizardAnswer(step, answer) {
+            wizardAnswers[step] = answer;
+            
+            // 隱藏目前步驟
+            document.getElementById(`wizard-step-${step}`).classList.add('hidden');
+            
+            if (step < 3) {
+                wizardCurrentStep = step + 1;
+                document.getElementById(`wizard-step-${wizardCurrentStep}`).classList.remove('hidden');
+                updateWizardUI();
+            } else {
+                wizardCurrentStep = 4;
+                calculateWizardResult();
+                updateWizardUI();
+            }
+        }
+
+        let recommendedId = '';
+        function calculateWizardResult() {
+            const rTitle = document.getElementById('wizard-result-title');
+            const rDesc = document.getElementById('wizard-result-desc');
+            
+            // 根據回答映射決策樹
+            const q1 = wizardAnswers[1];
+            const q2 = wizardAnswers[2];
+            const q3 = wizardAnswers[3];
+
+            document.getElementById('wizard-result').classList.remove('hidden');
+
+            if (q1 === 'A') {
+                recommendedId = 'claude-code-design';
+                rTitle.innerHTML = "🏆 首選推薦：Claude Design & Claude Code";
+                rDesc.innerHTML = "您想要完成 AI 相關與前端代碼開發任務，並具有冒險與嘗試程式的特質。Claude Code 帶來的「Vibe Coding（動嘴寫 App）」能幫助您在終端機中用自然語言快速打造 Chrome 插件或專屬網頁成果發表！";
+            } else if (q1 === 'B') {
+                if (q2 === 'A') {
+                    recommendedId = 'anytype-private';
+                    rTitle.innerHTML = "🏆 首選推薦：Anytype 隱私與離線筆記";
+                    rDesc.innerHTML = "您注重隱私，不希望繁瑣設定，希望離線記住學習與複習資料。Anytype 是完美去中心化、採用端到端加密的類 Notion 工具，保護您的資料安全與多端離線同步！";
+                } else {
+                    recommendedId = 'anki-srs';
+                    rTitle.innerHTML = "🏆 首選推薦：Anki 記憶考試神器";
+                    rDesc.innerHTML = "您面臨單字背誦、大考複習重任，且願意做一些基本設定。Anki 的間歇重複 (SRS) 被全球名校學霸推崇，能在考前最大化篩選您生疏的卡片，保證背單字效率拉滿！";
+                }
+            } else if (q1 === 'C') {
+                if (q2 === 'C') {
+                    recommendedId = 'excel-vba-inventory';
+                    rTitle.innerHTML = "🏆 首選推薦：Excel 庫存管理與 VBA 基礎";
+                    rDesc.innerHTML = "您面臨數據管理與多合一專案流程，且具備動手撰寫代碼的意願。Excel 的進階篩選功能與 VBA 巨集（COUNTA 自動儲存、MsgBox 庫存安全提醒）是最強、最輕量的事務系統！";
+                } else {
+                    recommendedId = 'notion-pkm';
+                    rTitle.innerHTML = "🏆 首選推薦：Notion 智慧學科大腦";
+                    rDesc.innerHTML = "您面臨大範圍的學習或日常專案規劃，希望管理得井井有條。Notion 具備關聯（Relation）資料庫功能、以及強大的 IFS 狀態公式、Repeat 每日任務，是打造數位筆記管家的首選。";
+                }
+            } else { // D. 影音與 3D
+                if (q3 === 'B') {
+                    recommendedId = 'premiere-pro-proxy';
+                    rTitle.innerHTML = "🏆 首選推薦：Premiere Pro 效能爆發與剪輯優化";
+                    rDesc.innerHTML = "您想要製作精美影片、微電影，且使用高貴的 Mac 設備。強烈推薦掌握 Premiere Pro 「代理檔（Proxy）」功能（推薦 ProRes 規格），大幅提高高解析度影片剪輯性能，告別卡頓！";
+                } else {
+                    recommendedId = 'gamma-ai-presentation';
+                    rTitle.innerHTML = "🏆 首選推薦：Gamma AI 簡報神器";
+                    rDesc.innerHTML = "您面臨簡報發表，喜歡一鍵生成且排版美觀。Gamma 能基於簡報大綱、對話調整，極速生成大師級 PPT、文件或單頁網頁，還能無網匯出！";
+                }
+            }
+        }
+
+        function viewRecommendedResource() {
+            closeWizardModal();
+            filterResources('all');
+            openResourceDetail(recommendedId);
+        }
+
+        // ==================== 5. NotebookLM AI 對話模組 (Gemini 2.5 Flash API) ====================
+        const apiKey = ""; // Canvas 運行環境將自動填充金鑰，維持空字串
+
+        // 將 NotebookLM 文件庫之核心知識精簡彙整成 SYSTEM PROMPT，確保對話完全基於此內容
+        const SYSTEM_PROMPT = `
+        你是由「PAPAYA 電腦教室」多堂熱門生產力課程、AI 工具、自動化工作流、程式開發精華講義所訓練的「AI 學習導師」。
+        你的任務是針對「學生」的提問進行解答，解答內容必須且只能完全基於以下【精華知識庫】：
+
+        【本機 AI 與網頁開發】
+        - Gemma 4 & LM Studio: 離線運行、無網防洩密本地 AI。規格有 E2B (適合手機/平板)、E4B (一般筆電、入門機) 以及 26B/31B (需高階電腦/GPU)。使用 LM Studio 將本地伺服器開啟，上下文額度調高，搭配 VS Code 擴充功能 "Continue" 進行連線。
+        - Claude Code / Claude Design / Claude Cowork: Claude Design 提供對話設計（簡報、網頁、App原型）、Tweak面板切換、人員簡介、軌道示意圖、打包導出。Claude Cowork 是桌面工作助理，在指定資料夾（工作區）安全運行，有 Skills 與 Plugins (如歡迎信 welcome-email、拍照作業自動分類)。Claude Code 則是終端機指令開發助手，實現「Vibe Coding」，Windows 安裝前需裝 Git，Mac 執行 xcode-select --install，動嘴就能寫 App 或 Chrome 插件並 debug。
+        - Hugging Face: AI 界的 App Store，有 250 萬模型。可本地部署或使用雲端 Inference Providers（需金鑰與Token），使用 python 套件 huggingface_hub 連線 Wan 2.2 影片生成模型，利用 wb (寫入二進位) 將結果導出成 MP4。
+
+        【智慧型筆記與知識庫】
+        - Notion: 內建關聯 (Relation)、雙向關聯與公式。公式屬性支援 IFS 函數（判斷完成率等於 1 為已完成，0 為未開始，其餘進行中）。任務選單具備 Repeat 循環、Button 一鍵生成。
+        - Anytype: 去中心化、完全離線、本地端到端加密筆記。不需帳密，使用「恢復短語（個人金鑰）」進行安全驗證。資料整理區分「集合 (Sets，基於物件類型的自動過濾)」與「集錦 (Collections，手動拖曳鏈接)」。
+        - Anki: 高效單字與複習字卡。雙冒號建立子牌組（例如 英文::單字），AwesomeTTS 擴充語音朗讀。支援匯出與社群 apkg 下載，可藉由 Excel 儲存成 CSV 大批量匯入。iOS 用戶使用網頁版 AnkiWeb 可免費。
+        - Antinote: Mac 極簡臨時便箋（Option+A 呼叫），OCR 文字辨識（暫不支援中文），內建數學計算（輸入 math 關鍵字與 = 號）、變數計算與貨幣換算（如 JPY to TWD）。
+
+        【流程自動化】
+        - Make.com: 無程式碼串接 Apps。有監聽 Gmail 新郵件 watch emails（下載附件到雲端硬碟、Gmail 寫草稿、Excel 新增一列）。流程中可點選 Add a Router 增加判斷分支。
+        - n8n: 自動化自建/雲端平台。手動觸發 (Trigger Manually)、Merge 節點 (合併多分支資料)、Sticky Note (註解便利貼)、Aggregate 節點 (將多筆資料整合成一則訊息、避免重複發信)。
+        - Line 客服 AI: 申請官方帳號（Line 商用 ID 密碼註冊），使用 AI Agent 模組，AI 助理知識庫 Token 上限設定 500-1000 回答客服最合適，對接 Line Send a Reply Message，載入 Reply Token。
+
+        【排版、辦公、3D與影音創作】
+        - Word 排版: 關鍵在於「文字與格式分離」，多層次清單必須連結到「標題樣式」（階層一連結標題 1，階層二連結標題 2），樣式（Styles）統一修改縮排，格式才不會崩潰跑跑。
+        - Excel VBA 庫存管理與篩選: 儲存格嵌入圖片。運用 COUNTA(B欄) + 2 計算庫存行數最後一行進行歸檔。使用 Target.Address 與 If 偵測滑鼠點擊入庫或出庫格子。安全庫存小於當前庫存時彈出 MsgBox exclamation（驚嘆號）對話框提醒。利用 Excel 進階篩選自動列出多重準則範圍資料。
+        - Power BI: 匯入 Excel 必須嚴防合併欄位、數值小計、跨欄標題等，只保留純淨紀錄並一鍵 Ctrl+T 轉換為表格。圖表：長條圖看工作量，圓形圖與樹狀圖看占比，地圖看銷售縣市大小圈。
+        - Apple Numbers: 浮動編輯表格的開放畫布（不像 Excel 無限大格子）。使用 SUMIF 計算分類加總，圖片置入形狀遮罩。
+        - PowerPoint 視差效果: 文字前景與背景圖片速度不同，向反方向移動背景，套用「轉化 (Morph)」轉場，即可形成立體 3D。
+        - AI 動畫完整製程: ChatGPT 寫分鏡大綱 -> Midjourney 畫一致性角色外貌（寬高比設定 1:1，動漫真人化可用 dzine 的以圖生圖 Image-to-Image 逼真風格與自動提示詞） -> Kling/Runway 圖片生成影片，支援 Upload Local Dubbing (本地配音嘴型同步) -> ElevenLabs 聲音克隆 -> Suno 純音樂配樂（開啟 Instrumental 確保無人聲） -> Premiere 剪輯。
+        - 瀏覽器元素移除: 擴充功能 Click to Remove Element（Ctrl+Shift+X 啟用）， Remember 記憶要打勾，點擊或 Space 即移除多餘廣告或空白框，眼睛暫時重現。
+        - PDF 互動表單: Canva 排版設計，導出 PDF 平面，LibreOffice 開啟並置入文字框、清單方塊控件，完成導出 PDF 互動式。Excel 可導入此 PDF 表單資料。
+
+        【回答學生守則】：
+        1. 務必使用 繁體中文（台灣習慣語彙），口氣務必親切、友善、富有耐心地給予學生學習與操作指導。
+        2. 當學生問到以上工具的使用方法、出錯解決、邏輯公式時，請根據上述精華知識庫提供清晰、具體的【步驟引導】。
+        3. 切勿編造知識庫中沒有提及的影片细節。若提問超出 PAPAYA 電腦教室知識庫的範圍，請客氣地回覆：『我的主要職責是解答 PAPAYA 學習院所涵蓋的 35+ 種超強 AI 與生產力工具喔！』。
+        `;
+
+        let chatHistory = [];
+
+        // 指數退避重試函數
+        async function fetchWithRetry(url, options, maxRetries = 5) {
+            let delay = 1000; // 初始延遲 1 秒
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.ok) {
+                        return await response.json();
+                    }
+                    // 如果是 HTTP 錯誤 (例如 429 流量限額或 503 伺服器忙碌)
+                    if (response.status === 429 || response.status >= 500) {
+                        throw new Error(`伺服器錯誤 (代碼: ${response.status})`);
+                    }
+                    const errData = await response.json();
+                    throw new Error(errData.error?.message || "請求失敗");
+                } catch (error) {
+                    if (i === maxRetries - 1) {
+                        throw error; // 最後一次嘗試失敗，拋出錯誤
+                    }
+                    // 等待後重試 (不輸出 retries 紀錄至 console)
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2; // 指數倍增
+                }
+            }
+        }
+
+        // 提交聊天請求
+        async function handleChatSubmit(event) {
+            if (event) event.preventDefault();
+
+            const chatInput = document.getElementById('chat-input');
+            const userText = chatInput.value.trim();
+            if (!userText) return;
+
+            // 1. 在 UI 呈現使用者訊息
+            appendMessage('user', userText);
+            chatInput.value = '';
+
+            // 2. 顯示 AI 正在思考中
+            const typingId = appendTypingIndicator();
+
+            // 3. 建構 Payload
+            chatHistory.push({ role: "user", parts: [{ text: userText }] });
+
+            const payload = {
+                contents: chatHistory,
+                systemInstruction: {
+                    parts: [{ text: SYSTEM_PROMPT }]
+                }
+            };
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+            try {
+                const data = await fetchWithRetry(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                // 4. 移除思考中動畫
+                removeTypingIndicator(typingId);
+
+                // 5. 解析回答
+                const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                if (aiResponse) {
+                    appendMessage('ai', aiResponse);
+                    chatHistory.push({ role: "model", parts: [{ text: aiResponse }] });
+                } else {
+                    throw new Error("AI 無法回傳有效的對話內容");
+                }
+            } catch (err) {
+                removeTypingIndicator(typingId);
+                appendMessage('ai', `❌ <strong>對話線路繁忙</strong>：${err.message || '連線逾時'}。請稍後再試，或使用左側「推薦問題」獲得即時解答！`);
+                showToast("連線異常，請稍後再試！");
+            }
+        }
+
+        // 快捷提問
+        function sendPresetQuestion(text) {
+            document.getElementById('chat-input').value = text;
+            handleChatSubmit();
+        }
+
+        // 清空歷史紀錄
+        function clearChatHistory() {
+            chatHistory = [];
+            const chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML = `
+                <!-- 歡迎語 -->
+                <div class="flex items-start space-x-3 max-w-[85%]">
+                    <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-500 flex items-center justify-center shrink-0 border border-brand-500/20">💡</div>
+                    <div class="p-3.5 bg-darkCard border border-darkBorder rounded-2xl text-xs sm:text-sm text-gray-200 leading-relaxed">
+                        對話歷史已清空。您可以再次向我詢問關於 LM Studio、Notion、Anki、VBA、Premiere Proxy 代理檔等任何 NotebookLM 工具的核心玩法！
+                    </div>
+                </div>
+            `;
+            showToast("歷史紀錄已重置。");
+        }
+
+        // 將訊息附加至聊天視窗
+        function appendMessage(role, text) {
+            const container = document.getElementById('chat-messages');
+            const msgDiv = document.createElement('div');
+            
+            if (role === 'user') {
+                msgDiv.className = "flex items-start space-x-3 justify-end max-w-[90%] ml-auto";
+                msgDiv.innerHTML = `
+                    <div class="p-3 bg-brand-500 text-white rounded-2xl text-xs sm:text-sm leading-relaxed shadow-md">
+                        ${text}
+                    </div>
+                    <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center shrink-0 border border-brand-500 font-extrabold text-xs">我</div>
+                `;
+            } else {
+                msgDiv.className = "flex items-start space-x-3 max-w-[85%]";
+                msgDiv.innerHTML = `
+                    <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-500 flex items-center justify-center shrink-0 border border-brand-500/20">💡</div>
+                    <div class="p-3.5 bg-darkCard border border-darkBorder rounded-2xl text-xs sm:text-sm text-gray-200 leading-relaxed space-y-2">
+                        ${formatMarkdown(text)}
+                    </div>
+                `;
+            }
+
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 附加思考中動畫
+        function appendTypingIndicator() {
+            const container = document.getElementById('chat-messages');
+            const typingDiv = document.createElement('div');
+            const id = 'typing-' + Date.now();
+            typingDiv.id = id;
+            typingDiv.className = "flex items-start space-x-3 max-w-[85%]";
+            typingDiv.innerHTML = `
+                <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-500 flex items-center justify-center shrink-0 border border-brand-500/20">💡</div>
+                <div class="p-3.5 bg-darkCard border border-darkBorder rounded-2xl text-xs sm:text-sm text-gray-400 flex items-center space-x-1">
+                    <span class="font-medium">導師正在查閱講義中</span>
+                    <span class="w-1.5 h-1.5 bg-brand-500 rounded-full animate-bounce"></span>
+                    <span class="w-1.5 h-1.5 bg-brand-500 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                    <span class="w-1.5 h-1.5 bg-brand-500 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                </div>
+            `;
+            container.appendChild(typingDiv);
+            container.scrollTop = container.scrollHeight;
+            return id;
+        }
+
+        function removeTypingIndicator(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        // 簡單 Markdown 格式轉化 (粗體、段落換行、斜體、程式碼區塊)
+        function formatMarkdown(text) {
+            let formatted = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`([^`]+)`/g, '<code class="bg-darkBg border border-darkBorder px-1 py-0.5 rounded text-xs text-brand-400">$1</code>')
+                .replace(/\n/g, '<br>');
+            return formatted;
+        }
+    </script>
+</body>
+</html>
